@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.mapper.BlogMapper">
+
+    <!-- 分页查询博客列表 -->
+    <select id="selectBlogPage" resultType="com.blog.entity.Blog">
+        SELECT
+            b.id,
+            b.title,
+            b.summary,
+            b.cover_image,
+            b.user_id,
+            b.category_id,
+            b.publish_status,
+            b.is_public,
+            b.view_count,
+            b.create_time,
+            b.update_time,
+            u.username,
+            c.name AS category_name
+        FROM blog b
+        LEFT JOIN user u ON b.user_id = u.id
+        LEFT JOIN category c ON b.category_id = c.id
+        <if test="tagId != null">
+        INNER JOIN blog_tag bt ON b.id = bt.blog_id AND bt.tag_id = #{tagId}
+        </if>
+        <where>
+            <if test="title != null and title != ''">
+                AND b.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="categoryId != null">
+                AND b.category_id = #{categoryId}
+            </if>
+            <if test="userId != null">
+                AND b.user_id = #{userId}
+            </if>
+            <if test="publishStatus != null">
+                AND b.publish_status = #{publishStatus}
+            </if>
+            <!-- 隐私权限判断：公开文章 OR 管理员 OR 作者本人 -->
+            <choose>
+                <when test="isAdmin">
+                    <!-- 管理员能看到所有文章 -->
+                </when>
+                <when test="currentUserId != null">
+                    <!-- 登录用户：公开文章 + 自己的私密文章 -->
+                    AND (b.is_public = 1 OR b.user_id = #{currentUserId})
+                </when>
+                <otherwise>
+                    <!-- 未登录：只能看公开文章 -->
+                    AND b.is_public = 1
+                </otherwise>
+            </choose>
+        AND b.is_deleted = 0
+        </where>
+        ORDER BY b.create_time DESC
+    </select>
+
+    <!-- 查询用户的私密文章 -->
+    <select id="selectMyPrivateBlogs" resultType="com.blog.entity.Blog">
+        SELECT
+            b.id,
+            b.title,
+            b.summary,
+            b.cover_image,
+            b.user_id,
+            b.category_id,
+            b.publish_status,
+            b.is_public,
+            b.view_count,
+            b.create_time,
+            b.update_time,
+            u.username,
+            c.name AS category_name
+        FROM blog b
+        LEFT JOIN user u ON b.user_id = u.id
+        LEFT JOIN category c ON b.category_id = c.id
+        WHERE b.user_id = #{userId}
+        AND b.is_public = 0
+        AND b.is_deleted = 0
+        ORDER BY b.create_time DESC
+    </select>
+
+    <!-- 查询博客详情 -->
+    <select id="selectBlogDetailById" resultMap="BlogDetailMap">
+        SELECT
+            b.id,
+            b.title,
+            b.content,
+            b.summary,
+            b.cover_image,
+            b.user_id,
+            b.category_id,
+            b.publish_status,
+            b.is_public,
+            b.view_count,
+            b.create_time,
+            b.update_time,
+            u.username,
+            c.name AS category_name,
+            t.id AS tag_id,
+            t.name AS tag_name
+        FROM blog b
+        LEFT JOIN user u ON b.user_id = u.id
+        LEFT JOIN category c ON b.category_id = c.id
+        LEFT JOIN blog_tag bt ON b.id = bt.blog_id
+        LEFT JOIN tag t ON bt.tag_id = t.id
+        WHERE b.id = #{id}
+    </select>
+
+    <!-- BlogDetail结果映射 -->
+    <resultMap id="BlogDetailMap" type="com.blog.entity.Blog">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="summary" property="summary"/>
+        <result column="cover_image" property="coverImage"/>
+        <result column="user_id" property="userId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="publish_status" property="publishStatus"/>
+        <result column="is_public" property="isPublic"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="username" property="username"/>
+        <result column="category_name" property="categoryName"/>
+        <!-- 标签集合 -->
+        <collection property="tags" ofType="com.blog.entity.Tag">
+            <id column="tag_id" property="id"/>
+            <result column="tag_name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <!-- 分页查询已删除的博客列表 -->
+    <select id="selectDeletedBlogPage" resultType="com.blog.entity.Blog">
+        SELECT
+            b.id,
+            b.title,
+            b.summary,
+            b.cover_image,
+            b.user_id,
+            b.category_id,
+            b.delete_time,
+            u.username,
+            c.name AS category_name
+        FROM blog b
+        LEFT JOIN user u ON b.user_id = u.id
+        LEFT JOIN category c ON b.category_id = c.id
+        WHERE b.is_deleted = 1
+        <if test="filterUserId != null">
+            AND b.user_id = #{filterUserId}
+        </if>
+        ORDER BY b.delete_time DESC
+    </select>
+
+    <!-- 查询已删除的博客 -->
+    <select id="selectDeletedBlogById" resultType="com.blog.entity.Blog">
+        SELECT
+            b.id,
+            b.title,
+            b.user_id,
+            b.is_deleted,
+            b.delete_time
+        FROM blog b
+        WHERE b.id = #{id} AND b.is_deleted = 1
+    </select>
+
+    <!-- 恢复博客 -->
+    <update id="restoreBlog">
+        UPDATE blog
+        SET is_deleted = 0, delete_time = NULL
+        WHERE id = #{id}
+    </update>
+
+    <!-- 物理删除博客 -->
+    <delete id="permanentDeleteBlog">
+        DELETE FROM blog WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.mapper.CommentMapper">
+
+    <!-- 查询文章的评论列表 -->
+    <select id="selectCommentListByBlogId" resultType="com.blog.entity.Comment">
+        SELECT
+            c.id,
+            c.blog_id,
+            c.user_id,
+            c.parent_id,
+            c.reply_to_user_id,
+            c.content,
+            c.is_pinned,
+            c.create_time,
+            c.update_time,
+            u.username,
+            u.avatar_url,
+            ru.username AS reply_to_username
+        FROM comment c
+        LEFT JOIN user u ON c.user_id = u.id
+        LEFT JOIN user ru ON c.reply_to_user_id = ru.id
+        WHERE c.blog_id = #{blogId} AND c.is_deleted = 0
+        ORDER BY c.is_pinned DESC, c.create_time ASC
+    </select>
+
+    <!-- 查询评论详情 -->
+    <select id="selectCommentDetailById" resultType="com.blog.entity.Comment">
+        SELECT
+            c.id,
+            c.blog_id,
+            c.user_id,
+            c.parent_id,
+            c.reply_to_user_id,
+            c.content,
+            c.is_pinned,
+            c.create_time,
+            c.update_time,
+            u.username,
+            u.avatar_url,
+            ru.username AS reply_to_username
+        FROM comment c
+        LEFT JOIN user u ON c.user_id = u.id
+        LEFT JOIN user ru ON c.reply_to_user_id = ru.id
+        WHERE c.id = #{id} AND c.is_deleted = 0
+    </select>
+
+</mapper>
