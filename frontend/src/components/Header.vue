@@ -11,6 +11,9 @@
         <nav class="nav-menu">
           <router-link to="/home" class="nav-item" active-class="active">首页</router-link>
           <router-link to="/blog-editor" class="nav-item" active-class="active">写文章</router-link>
+          <router-link to="/my-favorites" class="nav-item" active-class="active">
+            <i class="el-icon-collection"></i> 我的收藏
+          </router-link>
           <router-link to="/deleted-blogs" class="nav-item" active-class="active">回收站</router-link>
           <el-dropdown v-if="isAdmin" @command="handleManagementCommand">
             <span class="nav-item">
@@ -41,6 +44,9 @@
             </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="profile">个人中心</el-dropdown-item>
+              <el-dropdown-item command="favorites">
+                <i class="el-icon-collection"></i> 我的收藏
+              </el-dropdown-item>
               <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -100,6 +106,8 @@ export default {
         })
       } else if (command === 'profile') {
         this.$router.push('/profile')
+      } else if (command === 'favorites') {
+        this.$router.push('/my-favorites')
       }
     },
 

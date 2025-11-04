@@ -68,6 +68,16 @@ public class Blog implements Serializable {
     private Integer viewCount;
 
     /**
+     * 点赞数
+     */
+    private Integer likeCount;
+
+    /**
+     * 收藏数
+     */
+    private Integer favoriteCount;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)

@@ -87,6 +87,12 @@ const router = new Router({
       name: 'DeletedBlogList',
       component: () => import('@/views/DeletedBlogList'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/my-favorites',
+      name: 'MyFavorites',
+      component: () => import('@/views/MyFavorites'),
+      meta: { requiresAuth: true }
     }
   ]
 })

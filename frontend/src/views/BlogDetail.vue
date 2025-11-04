@@ -23,6 +23,14 @@
               {{ currentBlog.viewCount }}
             </span>
             <span class="meta-item">
+              <i class="el-icon-star-off"></i>
+              {{ currentBlog.likeCount || 0 }}
+            </span>
+            <span class="meta-item">
+              <i class="el-icon-collection"></i>
+              {{ currentBlog.favoriteCount || 0 }}
+            </span>
+            <span class="meta-item">
               <i class="el-icon-time"></i>
               {{ currentBlog.createTime }}
             </span>
@@ -42,6 +50,24 @@
         
         <!-- Content -->
         <div class="blog-content" v-html="formattedContent"></div>
+        
+        <!-- Interaction Buttons -->
+        <div class="interaction-bar">
+          <el-button
+            :type="hasLiked ? 'primary' : 'default'"
+            :icon="hasLiked ? 'el-icon-star-on' : 'el-icon-star-off'"
+            @click="toggleLike"
+          >
+            {{ hasLiked ? '已点赞' : '点赞' }} ({{ currentBlog.likeCount || 0 }})
+          </el-button>
+          <el-button
+            :type="hasFavorited ? 'warning' : 'default'"
+            :icon="hasFavorited ? 'el-icon-collection' : 'el-icon-collection-tag'"
+            @click="toggleFavorite"
+          >
+            {{ hasFavorited ? '已收藏' : '收藏' }} ({{ currentBlog.favoriteCount || 0 }})
+          </el-button>
+        </div>
         
         <!-- Actions -->
         <div class="blog-actions">
@@ -73,6 +99,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CommentSection from '@/components/CommentSection'
+import { likeBlog, unlikeBlog, checkLikeStatus, favoriteBlog, unfavoriteBlog, checkFavoriteStatus } from '@/api/blog'
 
 export default {
   name: 'BlogDetail',
@@ -85,7 +112,9 @@ export default {
       imagePreviewVisible: false,
       previewImageUrl: '',
       refreshTimer: null,
-      refreshInterval: 10000 // 10秒刷新一次
+      refreshInterval: 10000, // 10秒刷新一次
+      hasLiked: false,
+      hasFavorited: false
     }
   },
   computed: {
@@ -144,11 +173,65 @@ export default {
       this.loading = true
       try {
         await this.getBlogById(id)
+        // 加载点赞和收藏状态
+        await this.loadInteractionStatus()
       } catch (error) {
         this.$message.error('文章加载失败')
         this.$router.push('/home')
       } finally {
         this.loading = false
+      }
+    },
+    
+    async loadInteractionStatus() {
+      try {
+        const blogId = this.$route.params.id
+        const [likeRes, favoriteRes] = await Promise.all([
+          checkLikeStatus(blogId),
+          checkFavoriteStatus(blogId)
+        ])
+        this.hasLiked = likeRes.data
+        this.hasFavorited = favoriteRes.data
+      } catch (error) {
+        // 静默失败，不影响主流程
+      }
+    },
+    
+    async toggleLike() {
+      try {
+        const blogId = this.$route.params.id
+        if (this.hasLiked) {
+          await unlikeBlog(blogId)
+          this.$message.success('取消点赞成功')
+          this.hasLiked = false
+        } else {
+          await likeBlog(blogId)
+          this.$message.success('点赞成功')
+          this.hasLiked = true
+        }
+        // 刷新博客详情
+        await this.getBlogById(blogId)
+      } catch (error) {
+        this.$message.error(error.message || '操作失败')
+      }
+    },
+    
+    async toggleFavorite() {
+      try {
+        const blogId = this.$route.params.id
+        if (this.hasFavorited) {
+          await unfavoriteBlog(blogId)
+          this.$message.success('取消收藏成功')
+          this.hasFavorited = false
+        } else {
+          await favoriteBlog(blogId)
+          this.$message.success('收藏成功')
+          this.hasFavorited = true
+        }
+        // 刷新博客详情
+        await this.getBlogById(blogId)
+      } catch (error) {
+        this.$message.error(error.message || '操作失败')
       }
     },
     
@@ -304,6 +387,20 @@ export default {
 
 .blog-content >>> img:hover {
   transform: scale(1.05);
+}
+
+.interaction-bar {
+  margin-top: 30px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(79, 172, 254, 0.2);
+  border-bottom: 1px solid rgba(79, 172, 254, 0.2);
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.interaction-bar .el-button {
+  min-width: 120px;
 }
 
 .blog-actions {

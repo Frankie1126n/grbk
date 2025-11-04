@@ -44,6 +44,14 @@
               {{ blog.viewCount }}
             </span>
             <span class="meta-item">
+              <i class="el-icon-star-off"></i>
+              {{ blog.likeCount || 0 }}
+            </span>
+            <span class="meta-item">
+              <i class="el-icon-collection"></i>
+              {{ blog.favoriteCount || 0 }}
+            </span>
+            <span class="meta-item">
               <i class="el-icon-time"></i>
               {{ formatTime(blog.createTime) }}
             </span>

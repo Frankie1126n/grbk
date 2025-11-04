@@ -88,6 +88,12 @@ public interface BlogMapper extends BaseMapper<Blog> {
      */
     void permanentDeleteBlog(@Param("id") Long id);
 
-
-
+    /**
+     * 分页查询用户收藏的博客列表
+     * 
+     * @param page 分页对象
+     * @param userId 用户ID
+     * @return 收藏的博客分页列表
+     */
+    IPage<Blog> selectUserFavoriteBlogs(Page<Blog> page, @Param("userId") Integer userId);
 }

@@ -14,6 +14,8 @@
             b.publish_status,
             b.is_public,
             b.view_count,
+            b.like_count,
+            b.favorite_count,
             b.create_time,
             b.update_time,
             u.username,
@@ -53,7 +55,7 @@
             </choose>
         AND b.is_deleted = 0
         </where>
-        ORDER BY b.create_time DESC
+        ORDER BY b.like_count DESC, b.create_time DESC
     </select>
 
     <!-- 查询用户的私密文章 -->
@@ -68,6 +70,8 @@
             b.publish_status,
             b.is_public,
             b.view_count,
+            b.like_count,
+            b.favorite_count,
             b.create_time,
             b.update_time,
             u.username,
@@ -94,6 +98,8 @@
             b.publish_status,
             b.is_public,
             b.view_count,
+            b.like_count,
+            b.favorite_count,
             b.create_time,
             b.update_time,
             u.username,
@@ -120,6 +126,8 @@
         <result column="publish_status" property="publishStatus"/>
         <result column="is_public" property="isPublic"/>
         <result column="view_count" property="viewCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="favorite_count" property="favoriteCount"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="username" property="username"/>
@@ -176,5 +184,33 @@
     <delete id="permanentDeleteBlog">
         DELETE FROM blog WHERE id = #{id}
     </delete>
+
+    <!-- 分页查询用户收藏的博客列表 -->
+    <select id="selectUserFavoriteBlogs" resultType="com.blog.entity.Blog">
+        SELECT
+            b.id,
+            b.title,
+            b.summary,
+            b.cover_image,
+            b.user_id,
+            b.category_id,
+            b.publish_status,
+            b.is_public,
+            b.view_count,
+            b.like_count,
+            b.favorite_count,
+            b.create_time,
+            b.update_time,
+            u.username,
+            c.name AS category_name,
+            bf.create_time AS favorite_time
+        FROM blog b
+        INNER JOIN blog_favorite bf ON b.id = bf.blog_id
+        LEFT JOIN user u ON b.user_id = u.id
+        LEFT JOIN category c ON b.category_id = c.id
+        WHERE bf.user_id = #{userId}
+        AND b.is_deleted = 0
+        ORDER BY bf.create_time DESC
+    </select>
 
 </mapper>

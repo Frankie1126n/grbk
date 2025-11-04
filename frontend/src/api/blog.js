@@ -72,3 +72,74 @@ export function permanentDeleteBlog(id) {
     method: 'delete'
   })
 }
+
+/**
+ * 点赞博客
+ */
+export function likeBlog(blogId) {
+  return request({
+    url: `/blog/${blogId}/like`,
+    method: 'post'
+  })
+}
+
+/**
+ * 取消点赞
+ */
+export function unlikeBlog(blogId) {
+  return request({
+    url: `/blog/${blogId}/like`,
+    method: 'delete'
+  })
+}
+
+/**
+ * 检查点赞状态
+ */
+export function checkLikeStatus(blogId) {
+  return request({
+    url: `/blog/${blogId}/like/status`,
+    method: 'get'
+  })
+}
+
+/**
+ * 收藏博客
+ */
+export function favoriteBlog(blogId) {
+  return request({
+    url: `/blog/${blogId}/favorite`,
+    method: 'post'
+  })
+}
+
+/**
+ * 取消收藏
+ */
+export function unfavoriteBlog(blogId) {
+  return request({
+    url: `/blog/${blogId}/favorite`,
+    method: 'delete'
+  })
+}
+
+/**
+ * 检查收藏状态
+ */
+export function checkFavoriteStatus(blogId) {
+  return request({
+    url: `/blog/${blogId}/favorite/status`,
+    method: 'get'
+  })
+}
+
+/**
+ * 获取用户的收藏列表
+ */
+export function getUserFavorites(params) {
+  return request({
+    url: '/blog/favorites',
+    method: 'get',
+    params
+  })
+}
