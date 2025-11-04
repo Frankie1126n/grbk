@@ -130,15 +130,20 @@ export default {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(79, 172, 254, 0.2);
-  transition: all 0.3s ease;
+  background: rgba(255, 251, 235, 0.92);
+  backdrop-filter: blur(20px) saturate(150%);
+  border-bottom: 2px solid rgba(255, 183, 197, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 15px rgba(255, 183, 197, 0.15),
+              0 1px 3px rgba(163, 230, 53, 0.1);
 }
 
 .header-scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.15);
+  background: rgba(255, 251, 235, 0.98);
+  backdrop-filter: blur(25px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(255, 183, 197, 0.2),
+              0 2px 8px rgba(163, 230, 53, 0.12);
+  border-bottom-color: rgba(163, 230, 53, 0.4);
 }
 
 .container {
@@ -155,42 +160,76 @@ export default {
 }
 
 .logo-area h1 {
-  font-size: 24px;
+  font-size: 26px;
   margin: 0;
   cursor: pointer;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 50%, #A3E635 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+/* 小装饰 - 星星贴纸 */
+.logo-area h1::after {
+  content: '★';
+  position: absolute;
+  top: -8px;
+  right: -20px;
+  font-size: 14px;
+  color: #FF9F43;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.6; transform: scale(1.2) rotate(20deg); }
 }
 
 .nav-menu {
   display: flex;
-  gap: 30px;
+  gap: 35px;
 }
 
 .nav-item {
-  color: #333;
+  color: #FF9F43;
   text-decoration: none;
   font-size: 15px;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  padding: 8px 0;
 }
 
-.nav-item::after {
+/* 铅笔线条效果 */
+.nav-item::before {
   content: '';
   position: absolute;
-  bottom: -5px;
-  left: 0;
+  bottom: -2px;
+  left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, #FFB7C5, #FF9F43);
+  transform: translateX(-50%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(255, 183, 197, 0.4);
 }
 
-.nav-item:hover::after,
-.nav-item.active::after {
+.nav-item:hover::before,
+.nav-item.active::before {
   width: 100%;
 }
 
+.nav-item:hover {
+  color: #FFB7C5;
+  transform: translateY(-1px);
+}
+
 .nav-item.active {
-  color: #4facfe;
+  color: #FFB7C5;
 }
 
 .header-actions {
@@ -200,32 +239,63 @@ export default {
 }
 
 .search-input {
-  width: 200px;
+  width: 220px;
 }
 
 .search-input >>> .el-input__inner {
   border-radius: 20px;
-  border: 1px solid rgba(79, 172, 254, 0.3);
-  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-left: 40px;
+  color: #4a4a4a;
+  font-size: 14px;
+}
+
+.search-input >>> .el-input__inner:focus {
+  border-color: #FFB7C5;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 3px rgba(255, 183, 197, 0.15),
+              0 2px 8px rgba(255, 183, 197, 0.2);
+}
+
+.search-input >>> .el-input__inner::placeholder {
+  color: #ffb7c5;
+}
+
+.search-input >>> .el-input__prefix {
+  color: #FFB7C5;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-  padding: 5px 15px;
+  padding: 6px 18px;
   border-radius: 20px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 183, 197, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.2);
 }
 
 .user-info:hover {
-  background: rgba(79, 172, 254, 0.1);
+  background: rgba(255, 183, 197, 0.15);
+  border-color: rgba(255, 183, 197, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(255, 183, 197, 0.25);
+}
+
+.user-info >>> .el-avatar {
+  border: 2px solid #FFB7C5;
+  box-shadow: 0 2px 8px rgba(255, 183, 197, 0.3);
 }
 
 .username {
   font-size: 14px;
-  color: #333;
+  font-weight: 600;
+  color: #FF9F43;
 }
 
 /* 响应式设计 */
@@ -236,6 +306,10 @@ export default {
   
   .search-input {
     width: 150px;
+  }
+  
+  .header-content {
+    height: 60px;
   }
 }
 </style>

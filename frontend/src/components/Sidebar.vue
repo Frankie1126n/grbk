@@ -159,15 +159,40 @@ export default {
   padding: 30px 20px;
   cursor: pointer;
   transition: all 0.3s ease;
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(255, 183, 197, 0.2),
+              0 1px 3px rgba(163, 230, 53, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 课本装饰 */
+.user-card::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 1px dashed rgba(163, 230, 53, 0.2);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .user-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(79, 172, 254, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 28px rgba(255, 183, 197, 0.3),
+              0 2px 8px rgba(163, 230, 53, 0.15);
+  border-color: rgba(163, 230, 53, 0.4);
 }
 
 .clickable-avatar {
   transition: transform 0.3s ease;
+  border: 3px solid #FFB7C5;
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.3);
 }
 
 .user-card:hover .clickable-avatar {
@@ -182,34 +207,46 @@ export default {
 .user-card h3 {
   margin: 15px 0 5px 0;
   font-size: 18px;
-  color: #333;
-  transition: color 0.3s ease;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+  font-weight: 700;
 }
 
 .clickable-username:hover {
-  color: #4facfe;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .user-email {
-  color: #999;
+  color: #9ca3af;
   font-size: 13px;
   margin: 0;
+  font-weight: 500;
 }
 
 .card-title {
   font-size: 16px;
   margin: 0 0 15px 0;
   padding-bottom: 10px;
-  border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+  border-bottom: 2px solid rgba(255, 183, 197, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #FF9F43;
+  font-weight: 700;
 }
 
 .card-title .el-button--text {
-  color: #4facfe;
+  color: #FFB7C5;
   font-size: 12px;
   padding: 0;
+  font-weight: 600;
+}
+
+.card-title .el-button--text:hover {
+  color: #FF9F43;
 }
 
 .category-list {
@@ -223,36 +260,42 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  background: rgba(79, 172, 254, 0.05);
+  background: rgba(255, 183, 197, 0.1);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 1px solid rgba(255, 183, 197, 0.2);
 }
 
 .category-item:hover {
-  background: rgba(79, 172, 254, 0.15);
+  background: rgba(255, 183, 197, 0.2);
   transform: translateX(5px);
+  border-color: rgba(255, 183, 197, 0.4);
 }
 
 .category-item.active {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  border-color: transparent;
 }
 
 .category-item.active .category-name {
   color: white;
+  font-weight: 600;
 }
 
 .category-item.active .category-count {
   color: white;
+  font-weight: 700;
 }
 
 .category-name {
-  color: #333;
+  color: #4a4a4a;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .category-count {
-  color: #4facfe;
+  color: #FFB7C5;
   font-size: 13px;
   font-weight: bold;
 }
@@ -265,22 +308,24 @@ export default {
 
 .tag-item {
   padding: 5px 15px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
   color: white;
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .tag-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.4);
 }
 
 .tag-item.active {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: linear-gradient(135deg, #A3E635 0%, #87CEEB 100%);
+  box-shadow: 0 4px 12px rgba(163, 230, 53, 0.4);
   transform: translateY(-2px) scale(1.1);
 }
 
@@ -318,30 +363,34 @@ export default {
 }
 
 .hot-1 {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
   color: white;
 }
 
 .hot-2 {
-  background: linear-gradient(135deg, #ffd93d 0%, #ffe66d 100%);
+  background: linear-gradient(135deg, #A3E635 0%, #87CEEB 100%);
   color: white;
 }
 
 .hot-3 {
-  background: linear-gradient(135deg, #6bcf7f 0%, #84d68f 100%);
+  background: linear-gradient(135deg, #87CEEB 0%, #A3E635 100%);
   color: white;
 }
 
 .hot-title {
   flex: 1;
-  color: #333;
+  color: #4a4a4a;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .hot-blog-item:hover .hot-title {
-  color: #4facfe;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 </style>

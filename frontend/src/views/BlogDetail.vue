@@ -307,15 +307,16 @@ export default {
 }
 
 .meta-item {
-  color: #999;
+  color: #9ca3af;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 5px;
+  font-weight: 500;
 }
 
 .meta-item i {
-  color: #4facfe;
+  color: #FFB7C5;
 }
 
 .meta-item.clickable {
@@ -324,7 +325,7 @@ export default {
 }
 
 .meta-item.clickable:hover {
-  color: #4facfe;
+  color: #FF9F43;
 }
 
 .blog-tags {
@@ -335,10 +336,12 @@ export default {
 
 .tag {
   padding: 4px 12px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
   color: white;
   border-radius: 12px;
   font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .blog-content {
@@ -360,10 +363,11 @@ export default {
 }
 
 .blog-content >>> code {
-  background: rgba(79, 172, 254, 0.1);
+  background: rgba(255, 183, 197, 0.15);
   padding: 2px 6px;
   border-radius: 4px;
-  color: #4facfe;
+  color: #FF9F43;
+  font-weight: 500;
 }
 
 .blog-content >>> pre {
@@ -392,8 +396,8 @@ export default {
 .interaction-bar {
   margin-top: 30px;
   padding: 20px 0;
-  border-top: 1px solid rgba(79, 172, 254, 0.2);
-  border-bottom: 1px solid rgba(79, 172, 254, 0.2);
+  border-top: 2px solid rgba(255, 183, 197, 0.2);
+  border-bottom: 2px solid rgba(255, 183, 197, 0.2);
   display: flex;
   gap: 15px;
   justify-content: center;
@@ -401,12 +405,54 @@ export default {
 
 .interaction-bar .el-button {
   min-width: 120px;
+  border-radius: 20px;
+  font-weight: 600;
+  border: 2px solid;
+}
+
+.interaction-bar .el-button--primary {
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.4);
+}
+
+.interaction-bar .el-button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 183, 197, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.interaction-bar .el-button--warning {
+  background: linear-gradient(135deg, #A3E635 0%, #87CEEB 100%);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(163, 230, 53, 0.4);
+}
+
+.interaction-bar .el-button--warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .blog-actions {
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 1px solid rgba(79, 172, 254, 0.2);
+  border-top: 2px solid rgba(255, 183, 197, 0.2);
+}
+
+.blog-actions >>> .el-button {
+  border-radius: 20px;
+  font-weight: 600;
+  border: 2px solid;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 183, 197, 0.4);
+  color: #FF9F43;
+}
+
+.blog-actions >>> .el-button:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  transform: translateY(-2px);
 }
 
 /* 响应式设计 */

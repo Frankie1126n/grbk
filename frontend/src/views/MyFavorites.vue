@@ -354,11 +354,11 @@ export default {
 }
 
 .meta-item i {
-  color: #4facfe;
+  color: #FFB7C5;
 }
 
 .meta-item:hover {
-  color: #4facfe;
+  color: #FF9F43;
 }
 
 .pagination-wrapper {
@@ -368,7 +368,7 @@ export default {
 }
 
 .pagination-wrapper >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
 }
 
 .empty-state {
@@ -379,7 +379,10 @@ export default {
 
 .empty-state i {
   font-size: 80px;
-  color: rgba(79, 172, 254, 0.3);
+  background: linear-gradient(135deg, #FFB7C5, #FF9F43, #A3E635);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 20px;
 }
 

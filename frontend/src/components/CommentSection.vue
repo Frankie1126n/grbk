@@ -515,22 +515,44 @@ export default {
 <style scoped>
 .comment-section {
   margin-top: 40px;
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(255, 183, 197, 0.2),
+              0 1px 3px rgba(163, 230, 53, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  position: relative;
+}
+
+.comment-section::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px dashed rgba(163, 230, 53, 0.2);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .section-title {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 183, 197, 0.2);
 }
 
 .card {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(79, 172, 254, 0.2);
+  border: 2px solid rgba(255, 183, 197, 0.2);
   border-radius: 12px;
   padding: 20px;
 }
@@ -539,15 +561,44 @@ export default {
   display: flex;
   gap: 15px;
   margin-bottom: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 183, 197, 0.2);
+}
+
+.comment-input-box >>> .el-textarea__inner {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  border-radius: 10px;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+}
+
+.comment-input-box >>> .el-textarea__inner:focus {
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  box-shadow: 0 0 0 3px rgba(255, 183, 197, 0.15),
+              0 2px 8px rgba(255, 183, 197, 0.2);
 }
 
 .input-area {
   flex: 1;
 }
 
-.input-actions {
-  margin-top: 10px;
-  text-align: right;
+.input-actions >>> .el-button--primary {
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.4);
+  border-radius: 18px;
+  font-weight: 600;
+}
+
+.input-actions >>> .el-button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 183, 197, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .comment-list {
@@ -590,17 +641,17 @@ export default {
 
 .username {
   font-weight: 600;
-  color: #333;
+  color: #4a4a4a;
 }
 
 .reply-to {
-  color: #4facfe;
+  color: #FF9F43;
   font-size: 14px;
 }
 
 .time {
   font-size: 12px;
-  color: #999;
+  color: #9ca3af;
 }
 
 .comment-actions {
@@ -615,14 +666,14 @@ export default {
 }
 
 .action-trigger:hover {
-  background: rgba(79, 172, 254, 0.1);
+  background: rgba(255, 183, 197, 0.1);
 }
 
 .comment-content,
 .reply-content {
   margin-bottom: 12px;
   line-height: 1.6;
-  color: #333;
+  color: #4a4a4a;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -635,18 +686,18 @@ export default {
 
 .reply-btn {
   font-size: 14px;
-  color: #666;
+  color: #9ca3af;
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .reply-btn:hover {
-  color: #4facfe;
+  color: #FFB7C5;
 }
 
 .expand-btn {
   font-size: 14px;
-  color: #4facfe;
+  color: #FFB7C5;
   cursor: pointer;
   margin-left: 20px;
   transition: all 0.3s;
@@ -654,12 +705,27 @@ export default {
 }
 
 .expand-btn:hover {
-  color: #00f2fe;
+  color: #FF9F43;
 }
 
 .reply-input-box {
   margin-top: 15px;
   padding-left: 48px;
+}
+
+.reply-input-box >>> .el-textarea__inner {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  border-radius: 10px;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+}
+
+.reply-input-box >>> .el-textarea__inner:focus {
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  box-shadow: 0 0 0 3px rgba(255, 183, 197, 0.15),
+              0 2px 8px rgba(255, 183, 197, 0.2);
 }
 
 .input-actions {
@@ -685,14 +751,15 @@ export default {
 .replies {
   margin-top: 15px;
   padding-left: 48px;
-  border-left: 2px solid rgba(79, 172, 254, 0.2);
+  border-left: 2px solid rgba(255, 183, 197, 0.3);
 }
 
 .reply-item {
   padding: 15px;
-  background: rgba(79, 172, 254, 0.05);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
   margin-bottom: 10px;
+  border: 1px solid rgba(255, 183, 197, 0.2);
 }
 
 .empty-state {
@@ -703,7 +770,10 @@ export default {
 
 .empty-state i {
   font-size: 64px;
-  color: #ddd;
+  background: linear-gradient(135deg, #FFB7C5, #FF9F43, #A3E635);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 20px;
 }
 
@@ -724,11 +794,13 @@ export default {
   transition: transform 0.3s;
   display: inline-block;
   vertical-align: middle;
+  border: 2px solid rgba(255, 183, 197, 0.3);
 }
 
 .comment-image:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.3);
+  border-color: #FFB7C5;
 }
 
 /* 回复中的图片保持相同尺寸 */
@@ -741,21 +813,26 @@ export default {
 .clickable-avatar {
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+  border: 2px solid #FFB7C5;
+  box-shadow: 0 2px 8px rgba(255, 183, 197, 0.3);
 }
 
 .clickable-avatar:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.4);
 }
 
 /* Clickable Username */
 .username.clickable {
   cursor: pointer;
-  transition: color 0.3s;
+  transition: all 0.3s;
 }
 
 .username.clickable:hover {
-  color: #4facfe;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Image Preview Container */
@@ -765,8 +842,9 @@ export default {
   gap: 10px;
   margin-top: 10px;
   padding: 10px;
-  background: rgba(79, 172, 254, 0.05);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  border: 2px dashed rgba(255, 183, 197, 0.3);
 }
 
 .preview-image-wrapper {
@@ -781,19 +859,20 @@ export default {
   border-radius: 6px;
   cursor: pointer;
   transition: transform 0.3s;
-  border: 2px solid rgba(79, 172, 254, 0.3);
+  border: 2px solid rgba(255, 183, 197, 0.4);
 }
 
 .preview-thumbnail:hover {
   transform: scale(1.05);
-  border-color: #4facfe;
+  border-color: #FFB7C5;
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.3);
 }
 
 .remove-image {
   position: absolute;
   top: -8px;
   right: -8px;
-  background: #ff4d4f;
+  background: linear-gradient(135deg, #FF9F43, #FFB7C5);
   color: white;
   border-radius: 50%;
   width: 20px;
@@ -804,11 +883,14 @@ export default {
   cursor: pointer;
   font-size: 12px;
   transition: all 0.3s;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(255, 159, 67, 0.4);
 }
 
 .remove-image:hover {
-  background: #ff7875;
+  background: linear-gradient(135deg, #FFB7C5, #FF9F43);
   transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(255, 159, 67, 0.5);
 }
 
 /* Image Preview Dialog */

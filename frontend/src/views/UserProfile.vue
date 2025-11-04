@@ -133,7 +133,6 @@ export default {
 .user-profile-page {
   min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
 }
 
@@ -142,13 +141,21 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(rgba(79, 172, 254, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79, 172, 254, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 183, 197, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(163, 230, 53, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(135, 206, 235, 0.06) 0%, transparent 50%);
+  animation: sakuraFloat 20s ease-in-out infinite;
+  z-index: -1;
   pointer-events: none;
+}
+
+@keyframes sakuraFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(20px, -15px) rotate(3deg); }
+  66% { transform: translate(-15px, 10px) rotate(-2deg); }
 }
 
 .profile-container {
@@ -167,25 +174,55 @@ export default {
 
 .profile-content {
   padding: 40px;
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(255, 183, 197, 0.25),
+              0 4px 12px rgba(163, 230, 53, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  position: relative;
+}
+
+/* 课本装饰 */
+.profile-content::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px dashed rgba(163, 230, 53, 0.25);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .profile-header {
   text-align: center;
   padding-bottom: 30px;
-  border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+  border-bottom: 2px solid rgba(255, 183, 197, 0.2);
   margin-bottom: 30px;
+}
+
+.profile-header >>> .el-avatar {
+  border: 3px solid #FFB7C5;
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.3);
 }
 
 .username {
   font-size: 28px;
-  color: #333;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin: 20px 0 10px 0;
+  font-weight: 700;
 }
 
 .email {
-  color: #666;
+  color: #6b6b6b;
   font-size: 14px;
   margin: 0 0 15px 0;
+  font-weight: 500;
 }
 
 .role-badge {
@@ -194,16 +231,19 @@ export default {
   border-radius: 15px;
   font-size: 12px;
   font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .role-admin {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  background: linear-gradient(135deg, #FF9F43 0%, #FFB7C5 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(255, 159, 67, 0.3);
 }
 
 .role-user {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #A3E635 0%, #87CEEB 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(163, 230, 53, 0.3);
 }
 
 .user-stats {
@@ -220,13 +260,17 @@ export default {
 .stat-number {
   font-size: 32px;
   font-weight: bold;
-  color: #4facfe;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 8px;
 }
 
 .stat-label {
   font-size: 14px;
-  color: #999;
+  color: #9ca3af;
+  font-weight: 500;
 }
 
 .user-blogs {
@@ -237,7 +281,12 @@ export default {
   font-size: 20px;
   margin: 0 0 20px 0;
   padding-bottom: 10px;
-  border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+  border-bottom: 2px solid rgba(255, 183, 197, 0.2);
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
 .blog-list {
@@ -248,27 +297,30 @@ export default {
 
 .blog-item {
   padding: 20px;
-  background: rgba(79, 172, 254, 0.05);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(79, 172, 254, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.2);
 }
 
 .blog-item:hover {
-  background: rgba(79, 172, 254, 0.1);
+  background: rgba(255, 255, 255, 0.95);
   transform: translateX(5px);
+  border-color: rgba(255, 183, 197, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.2);
 }
 
 .blog-title {
   font-size: 16px;
-  color: #333;
+  color: #4a4a4a;
   margin: 0 0 10px 0;
+  font-weight: 600;
 }
 
 .blog-summary {
   font-size: 14px;
-  color: #666;
+  color: #6b6b6b;
   margin: 0 0 10px 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -280,7 +332,7 @@ export default {
   display: flex;
   gap: 20px;
   font-size: 13px;
-  color: #999;
+  color: #9ca3af;
 }
 
 .blog-info span {
@@ -290,27 +342,50 @@ export default {
 }
 
 .blog-info i {
-  color: #4facfe;
+  color: #FFB7C5;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: #9ca3af;
 }
 
 .empty-state i {
   font-size: 64px;
-  color: rgba(79, 172, 254, 0.3);
+  background: linear-gradient(135deg, #FFB7C5, #FF9F43, #A3E635);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 20px;
 }
 
 .empty-state p {
   font-size: 16px;
   margin: 0;
+  color: #6b6b6b;
+  font-weight: 500;
 }
 
 .actions {
   text-align: center;
+}
+
+.actions >>> .el-button {
+  padding: 12px 40px;
+  font-size: 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  border: 2px solid;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 183, 197, 0.4);
+  color: #FF9F43;
+}
+
+.actions >>> .el-button:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  transform: translateY(-2px);
 }
 </style>

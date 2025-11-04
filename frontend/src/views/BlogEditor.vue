@@ -385,81 +385,120 @@ export default {
 .blog-editor-page {
   min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
-}
-
-.blog-editor-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(rgba(79, 172, 254, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79, 172, 254, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  pointer-events: none;
 }
 
 .editor-container {
   max-width: 1000px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
   padding: 40px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(255, 183, 197, 0.25),
+              0 4px 12px rgba(163, 230, 53, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.3);
   position: relative;
   z-index: 1;
+}
+
+/* 课本装饰 */
+.editor-container::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px dashed rgba(163, 230, 53, 0.25);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .editor-header {
   text-align: center;
   margin-bottom: 40px;
+  position: relative;
 }
 
 .editor-header h2 {
-  color: #fff;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 50%, #A3E635 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+/* 铅笔装饰 */
+.editor-header h2::before {
+  content: '✏️';
+  position: absolute;
+  left: 20%;
+  top: -5px;
+  font-size: 24px;
 }
 
 .blog-form >>> .el-form-item__label {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
+  color: #4a4a4a;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 .blog-form >>> .el-input__inner,
 .blog-form >>> .el-textarea__inner {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  border-radius: 10px;
+  color: #4a4a4a;
   transition: all 0.3s ease;
+  font-size: 14px;
 }
 
 .blog-form >>> .el-input__inner::placeholder,
 .blog-form >>> .el-textarea__inner::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 183, 197, 0.5);
 }
 
 .blog-form >>> .el-input__inner:focus,
 .blog-form >>> .el-textarea__inner:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #4facfe;
-  box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  box-shadow: 0 0 0 3px rgba(255, 183, 197, 0.15),
+              0 2px 8px rgba(255, 183, 197, 0.2);
 }
 
 .blog-form >>> .el-select {
   width: 100%;
 }
 
+.blog-form >>> .el-select .el-input__inner {
+  padding-left: 15px;
+}
+
 .blog-form >>> .el-radio__label {
-  color: rgba(255, 255, 255, 0.9);
+  color: #4a4a4a;
+  font-weight: 500;
+}
+
+.blog-form >>> .el-radio__input.is-checked .el-radio__inner {
+  background: #FFB7C5;
+  border-color: #FFB7C5;
+}
+
+.blog-form >>> .el-radio__input.is-checked + .el-radio__label {
+  color: #FF9F43;
+}
+
+.blog-form >>> .el-checkbox__input.is-checked .el-checkbox__inner {
+  background: #FFB7C5;
+  border-color: #FFB7C5;
+}
+
+.blog-form >>> .el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #FF9F43;
 }
 
 .editor-toolbar {
@@ -467,52 +506,73 @@ export default {
 }
 
 .blog-form >>> .el-button {
-  border-radius: 8px;
+  border-radius: 18px;
   transition: all 0.3s ease;
+  font-weight: 600;
+  border: 2px solid;
 }
 
 .blog-form >>> .el-button--primary {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  border: none;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.4);
 }
 
 .blog-form >>> .el-button--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+  box-shadow: 0 6px 20px rgba(255, 183, 197, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .blog-form >>> .el-button--default {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 183, 197, 0.4);
+  color: #FF9F43;
 }
 
 .blog-form >>> .el-button--default:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  transform: translateY(-2px);
+}
+
+.blog-form >>> .el-button--success {
+  background: linear-gradient(135deg, #A3E635 0%, #87CEEB 100%);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(163, 230, 53, 0.4);
+}
+
+.blog-form >>> .el-button--success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
 }
 
 .preview-content {
   padding: 20px;
-  background: #fff;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 183, 197, 0.2);
 }
 
 .preview-content h1 {
-  color: #333;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 15px;
+  font-weight: 700;
 }
 
 .preview-meta {
-  color: #666;
+  color: #6b6b6b;
   font-size: 14px;
   margin-bottom: 20px;
 }
 
 .preview-meta span {
   margin-right: 20px;
+  color: #FF9F43;
 }
 
 .preview-cover {
@@ -521,21 +581,23 @@ export default {
 
 .preview-cover img {
   max-width: 100%;
-  border-radius: 8px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 183, 197, 0.3);
 }
 
 .preview-summary {
-  color: #666;
+  color: #6b6b6b;
   font-size: 16px;
   line-height: 1.8;
   margin-bottom: 20px;
   padding: 15px;
-  background: #f5f5f5;
-  border-radius: 8px;
+  background: rgba(255, 183, 197, 0.1);
+  border-radius: 10px;
+  border-left: 4px solid #FFB7C5;
 }
 
 .preview-body {
-  color: #333;
+  color: #4a4a4a;
   font-size: 16px;
   line-height: 1.8;
 }
@@ -544,12 +606,12 @@ export default {
 .image-preview-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 10px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  border: 2px dashed rgba(255, 183, 197, 0.3);
 }
 
 .preview-image-wrapper {
@@ -561,37 +623,40 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s;
-  border: 2px solid rgba(79, 172, 254, 0.3);
+  border: 2px solid rgba(255, 183, 197, 0.4);
 }
 
 .preview-thumbnail:hover {
-  transform: scale(1.05);
-  border-color: #4facfe;
+  transform: scale(1.08);
+  border-color: #FFB7C5;
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.3);
 }
 
 .remove-image {
   position: absolute;
   top: -8px;
   right: -8px;
-  background: #ff4d4f;
+  background: linear-gradient(135deg, #FF9F43, #FFB7C5);
   color: white;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(255, 159, 67, 0.4);
 }
 
 .remove-image:hover {
-  background: #ff7875;
-  transform: scale(1.1);
+  transform: scale(1.15);
+  box-shadow: 0 3px 12px rgba(255, 159, 67, 0.5);
 }
 
 /* Image Preview Dialog */
@@ -608,5 +673,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .editor-container {
+    padding: 30px 20px;
+  }
+  
+  .editor-header h2 {
+    font-size: 26px;
+  }
+  
+  .editor-header h2::before {
+    left: 10%;
+  }
 }
 </style>

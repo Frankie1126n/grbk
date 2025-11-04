@@ -135,23 +135,37 @@ export default {
 .upload-trigger {
   width: 150px;
   height: 150px;
-  border: 2px dashed rgba(79, 172, 254, 0.5);
-  border-radius: 8px;
+  border: 2px dashed rgba(255, 183, 197, 0.4);
+  border-radius: 12px;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.8);
+  position: relative;
+}
+
+/* 铅笔装饰 */
+.upload-trigger::after {
+  content: '✏️';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  opacity: 0.3;
 }
 
 .upload-trigger:hover {
-  border-color: #4facfe;
-  background: rgba(79, 172, 254, 0.1);
+  border-color: #FFB7C5;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.25);
 }
 
 .upload-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .upload-placeholder {
@@ -161,22 +175,26 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: #FF9F43;
+  background: rgba(255, 251, 235, 0.9);
 }
 
 .upload-placeholder i {
   font-size: 40px;
   margin-bottom: 10px;
+  color: #FFB7C5;
 }
 
 .upload-placeholder span {
   font-size: 14px;
+  color: #6b6b6b;
+  font-weight: 500;
 }
 
 .upload-tip {
   margin-top: 8px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #9ca3af;
   text-align: center;
 }
 </style>

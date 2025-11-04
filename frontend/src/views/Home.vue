@@ -100,6 +100,32 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #FFFBEB 0%, #F8CBA6 50%, #FFB7C5 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 樱花飘落背景 */
+.home-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 183, 197, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(163, 230, 53, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(135, 206, 235, 0.06) 0%, transparent 50%);
+  animation: sakuraFloat 20s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes sakuraFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(20px, -15px) rotate(3deg); }
+  66% { transform: translate(-15px, 10px) rotate(-2deg); }
 }
 
 .content-wrapper {

@@ -214,48 +214,61 @@ export default {
 .profile-page {
   min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
-}
-
-.profile-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(rgba(79, 172, 254, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79, 172, 254, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  pointer-events: none;
 }
 
 .profile-container {
   max-width: 700px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
   padding: 40px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(255, 183, 197, 0.25),
+              0 4px 12px rgba(163, 230, 53, 0.1);
+  border: 2px solid rgba(255, 183, 197, 0.3);
   position: relative;
   z-index: 1;
+}
+
+/* 课本装饰 */
+.profile-container::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px dashed rgba(163, 230, 53, 0.25);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .profile-header {
   text-align: center;
   margin-bottom: 40px;
+  position: relative;
 }
 
 .profile-header h2 {
-  color: #fff;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 50%, #A3E635 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+/* 小装饰 */
+.profile-header h2::after {
+  content: '★';
+  position: absolute;
+  top: -5px;
+  right: 30%;
+  font-size: 18px;
+  color: #FF9F43;
 }
 
 .profile-form {
@@ -263,67 +276,102 @@ export default {
 }
 
 .profile-form >>> .el-form-item__label {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
+  color: #4a4a4a;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 .profile-form >>> .el-input__inner {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  border-radius: 10px;
+  color: #4a4a4a;
   transition: all 0.3s ease;
+  padding: 12px 15px;
+  font-size: 14px;
 }
 
 .profile-form >>> .el-input__inner::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 183, 197, 0.5);
 }
 
 .profile-form >>> .el-input__inner:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #4facfe;
-  box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  box-shadow: 0 0 0 3px rgba(255, 183, 197, 0.15),
+              0 2px 8px rgba(255, 183, 197, 0.2);
 }
 
 .password-section {
   margin-top: 40px;
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 2px solid rgba(255, 183, 197, 0.2);
+  position: relative;
+}
+
+/* 分割线装饰 */
+.password-section::before {
+  content: '✧';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 251, 235, 0.95);
+  padding: 0 10px;
+  color: #A3E635;
+  font-size: 20px;
 }
 
 .password-section h3 {
-  color: #fff;
+  color: #FF9F43;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0 0 20px 0;
+  text-align: center;
 }
 
 .profile-form >>> .el-button {
   padding: 12px 40px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 20px;
   transition: all 0.3s ease;
+  font-weight: 600;
+  border: 2px solid;
 }
 
 .profile-form >>> .el-button--primary {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  border: none;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 183, 197, 0.4);
 }
 
 .profile-form >>> .el-button--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+  box-shadow: 0 6px 20px rgba(255, 183, 197, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .profile-form >>> .el-button--default {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 183, 197, 0.4);
+  color: #FF9F43;
 }
 
 .profile-form >>> .el-button--default:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB7C5;
+  transform: translateY(-2px);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 30px 20px;
+  }
+  
+  .profile-header h2 {
+    font-size: 26px;
+  }
 }
 </style>
