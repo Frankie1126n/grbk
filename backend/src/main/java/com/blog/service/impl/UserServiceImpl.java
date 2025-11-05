@@ -222,4 +222,26 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(LocalDateTime.now());
         userMapper.updateById(user);
     }
+
+    @Override
+    public void resetPassword(String email, String newPassword) {
+        // 根据邮箱查找用户
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getEmail, email);
+        User user = userMapper.selectOne(wrapper);
+        
+        if (user == null) {
+            throw new BusinessException(404, "用户不存在");
+        }
+        
+        // 验证密码强度
+        if (newPassword == null || newPassword.length() < 6 || newPassword.length() > 20) {
+            throw new BusinessException(400, "密码长度必须在6-20个字符之间");
+        }
+        
+        // 更新密码
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.updateById(user);
+    }
 }

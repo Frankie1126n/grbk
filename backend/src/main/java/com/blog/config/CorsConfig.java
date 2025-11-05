@@ -28,8 +28,12 @@ public class CorsConfig {
         // 允许所有HTTP方法
         config.addAllowedMethod("*");
         
-        // 允许携带认证信息（cookies）
+        // 允许携带认证信息（cookies/session）
         config.setAllowCredentials(true);
+        
+        // 暴露的响应头
+        config.addExposedHeader("Authorization");
+        config.addExposedHeader("Set-Cookie");
         
         // 预检请求的有效期（秒）
         config.setMaxAge(3600L);

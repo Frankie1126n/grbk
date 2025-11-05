@@ -27,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/user/login",
                         "/user/register",
                         "/user/forgot-password",
+                        "/user/reset-password",
                         "/blog/list",
                         "/blog/{id}",
                         "/category/list",

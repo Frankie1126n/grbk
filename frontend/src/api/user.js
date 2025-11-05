@@ -64,7 +64,12 @@ export function resetPassword(data) {
   return request({
     url: '/user/reset-password',
     method: 'post',
-    params: data
+    data: data,
+    params: {
+      email: data.email,
+      code: data.code,
+      newPassword: data.newPassword
+    }
   })
 }
 

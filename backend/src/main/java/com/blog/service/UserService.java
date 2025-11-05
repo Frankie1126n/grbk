@@ -71,4 +71,12 @@ public interface UserService {
      * 更新用户角色和状态
      */
     void updateUserRoleAndStatus(UserManagementDTO dto);
+
+    /**
+     * 重置用户密码
+     * 
+     * @param email 用户邮箱
+     * @param newPassword 新密码
+     */
+    void resetPassword(String email, String newPassword);
 }
