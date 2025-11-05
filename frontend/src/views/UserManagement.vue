@@ -21,7 +21,11 @@
         <el-table-column prop="email" label="邮箱" width="200" />
         <el-table-column label="头像" width="100">
           <template slot-scope="scope">
-            <el-avatar :src="scope.row.avatarUrl || defaultAvatar" :size="40" />
+            <CroppedAvatar 
+              :src="scope.row.avatarUrl || defaultAvatar" 
+              :size="40" 
+              :border-width="'1px'"
+            />
           </template>
         </el-table-column>
         <el-table-column label="角色" width="120">
@@ -99,9 +103,13 @@
 
 <script>
 import { getUserList, updateUserRoleAndStatus } from '@/api/user'
+import CroppedAvatar from '@/components/CroppedAvatar'
 
 export default {
   name: 'UserManagement',
+  components: {
+    CroppedAvatar
+  },
   data() {
     return {
       userList: [],
@@ -222,6 +230,11 @@ export default {
 .card {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(79, 172, 254, 0.2);
+}
+
+/* Avatar styling in table */
+.el-table >>> .el-avatar {
+  object-fit: cover;
 }
 
 .pagination-wrapper {

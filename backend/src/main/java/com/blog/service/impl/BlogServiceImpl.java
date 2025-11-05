@@ -81,6 +81,31 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Blog getBlogByIdWithoutIncrementingViewCount(Long id, Integer currentUserId) {
+        Blog blog = blogMapper.selectBlogDetailById(id);
+        if (blog == null) {
+            throw new BusinessException(404, "文章不存在");
+        }
+        
+        // 隐私权限检查：私密文章只有作者可以查看（管理员也不能查看别人的私密文章）
+        if (blog.getIsPublic() != null && blog.getIsPublic() == 0) {
+            // 私密文章
+            if (currentUserId == null) {
+                // 未登录用户不能查看
+                throw new BusinessException(403, "该文章为私密文章，请先登录");
+            }
+            // 检查是否为作者（仅作者可查看）
+            boolean isOwner = blog.getUserId().equals(currentUserId);
+            if (!isOwner) {
+                throw new BusinessException(403, "该文章为私密文章，无权查看");
+            }
+        }
+        
+        // 注意：这里不增加阅读量
+        return blog;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveBlog(BlogDTO blogDTO, Integer userId) {
         if (blogDTO.getId() == null) {

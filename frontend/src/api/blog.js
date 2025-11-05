@@ -22,6 +22,16 @@ export function getBlogById(id) {
 }
 
 /**
+ * 根据ID查询博客详情（不增加阅读量）
+ */
+export function getBlogDetailById(id) {
+  return request({
+    url: `/blog/${id}/detail`,
+    method: 'get'
+  })
+}
+
+/**
  * 保存博客（新增或更新）
  */
 export function saveBlog(data) {

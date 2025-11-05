@@ -77,6 +77,16 @@
             删除
           </el-button>
         </div>
+        <div v-else-if="canDelete(blog)" class="blog-actions">
+          <el-button
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click.stop="confirmDelete(blog.id)"
+          >
+            删除
+          </el-button>
+        </div>
       </div>
       
       <!-- Pagination -->
@@ -166,10 +176,15 @@ export default {
     },
     
     canEdit(blog) {
-      // admin可以编辑所有文章，其他用户只能编辑自己的文章
+      // 用户只能编辑自己的文章（即使是管理员也不能编辑其他用户的文章）
+      return blog.username === this.userInfo.username
+    },
+
+    canDelete(blog) {
+      // admin可以删除所有文章，其他用户只能删除自己的文章
       return this.userInfo.role === 'admin' || blog.username === this.userInfo.username
     },
-    
+
     editBlog(id) {
       this.$router.push(`/blog-editor/${id}`)
     },

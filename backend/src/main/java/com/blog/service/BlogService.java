@@ -46,6 +46,15 @@ public interface BlogService {
     Blog getBlogById(Long id, Integer currentUserId);
 
     /**
+     * 根据ID查询博客详情（不增加阅读量）
+     * 
+     * @param id 博客ID
+     * @param currentUserId 当前登录用户ID
+     * @return 博客详情
+     */
+    Blog getBlogByIdWithoutIncrementingViewCount(Long id, Integer currentUserId);
+
+    /**
      * 保存博客（新增或更新）
      * 
      * @param blogDTO 博客数据

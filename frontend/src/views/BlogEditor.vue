@@ -216,7 +216,8 @@ export default {
   },
   computed: {
     ...mapState('category', ['categoryList']),
-    ...mapState('tag', ['tagList'])
+    ...mapState('tag', ['tagList']),
+    ...mapState('user', ['userInfo'])
   },
   mounted() {
     this.loadData()
@@ -238,6 +239,13 @@ export default {
       try {
         const res = await getBlogById(id)
         if (res.code === 200) {
+          // 权限检查：用户只能编辑自己的文章（即使是管理员也不能编辑其他用户的文章）
+          if (res.data.username !== this.userInfo.username) {
+            this.$message.error('无权限编辑此文章')
+            this.$router.push('/home')
+            return
+          }
+          
           this.blogForm = {
             id: res.data.id,
             title: res.data.title,

@@ -39,8 +39,8 @@ mybatis-plus:
 
 # JWT Configuration
 jwt:
-  secret: personalBlogSecretKeyForJWTToken2024MustBeLongEnoughForHS256Algorithm
-  expiration: 86400000  # 24 hours in milliseconds
+  secret: personalBlogSecretKeyForJWTToken2025MustBeLongEnoughForHS256Algorithm
+  expiration: 1800000  # 24 hours in milliseconds
 
 # Swagger Configuration
 springfox:

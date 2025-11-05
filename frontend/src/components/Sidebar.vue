@@ -3,7 +3,12 @@
     <!-- User Card -->
     <div class="user-card card" @click="goToMyProfile">
       <div class="avatar-wrapper">
-        <el-avatar :src="userInfo.avatarUrl || defaultAvatar" :size="80" class="clickable-avatar" />
+        <CroppedAvatar 
+          :src="userInfo.avatarUrl || defaultAvatar" 
+          :size="80" 
+          class="clickable-avatar" 
+          :border-width="'3px'"
+        />
       </div>
       <h3 class="clickable-username">{{ userInfo.username }}</h3>
       <p class="user-email">{{ userInfo.email }}</p>
@@ -69,9 +74,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import CroppedAvatar from '@/components/CroppedAvatar'
 
 export default {
   name: 'Sidebar',
+  components: {
+    CroppedAvatar
+  },
   data() {
     return {
       defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
@@ -193,6 +202,7 @@ export default {
   transition: transform 0.3s ease;
   border: 3px solid #FFB7C5;
   box-shadow: 0 4px 15px rgba(255, 183, 197, 0.3);
+  object-fit: cover;
 }
 
 .user-card:hover .clickable-avatar {

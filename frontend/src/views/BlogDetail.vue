@@ -99,7 +99,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CommentSection from '@/components/CommentSection'
-import { likeBlog, unlikeBlog, checkLikeStatus, favoriteBlog, unfavoriteBlog, checkFavoriteStatus } from '@/api/blog'
+import { likeBlog, unlikeBlog, checkLikeStatus, favoriteBlog, unfavoriteBlog, checkFavoriteStatus, getBlogDetailById } from '@/api/blog'
 
 export default {
   name: 'BlogDetail',
@@ -186,6 +186,7 @@ export default {
 
       this.loading = true
       try {
+        // 首次加载使用常规接口，会增加阅读量
         await this.getBlogById(id)
         // 加载点赞和收藏状态
         await this.loadInteractionStatus()
@@ -223,8 +224,12 @@ export default {
           this.$message.success('点赞成功')
           this.hasLiked = true
         }
-        // 刷新博客详情
-        await this.getBlogById(blogId)
+        // 刷新博客详情（不增加阅读量）
+        const res = await getBlogDetailById(blogId)
+        if (res.code === 200) {
+          // 更新 Vuex 中的博客数据
+          this.$store.commit('blog/SET_CURRENT_BLOG', res.data)
+        }
       } catch (error) {
         this.$message.error(error.message || '操作失败')
       }
@@ -242,8 +247,12 @@ export default {
           this.$message.success('收藏成功')
           this.hasFavorited = true
         }
-        // 刷新博客详情
-        await this.getBlogById(blogId)
+        // 刷新博客详情（不增加阅读量）
+        const res = await getBlogDetailById(blogId)
+        if (res.code === 200) {
+          // 更新 Vuex 中的博客数据
+          this.$store.commit('blog/SET_CURRENT_BLOG', res.data)
+        }
       } catch (error) {
         this.$message.error(error.message || '操作失败')
       }
@@ -262,7 +271,15 @@ export default {
       this.refreshTimer = setInterval(() => {
         const id = this.$route.params.id
         if (id) {
-          this.getBlogById(id)
+          // 使用不增加阅读量的接口进行定时刷新
+          getBlogDetailById(id).then(res => {
+            if (res.code === 200) {
+              // 更新 Vuex 中的博客数据
+              this.$store.commit('blog/SET_CURRENT_BLOG', res.data)
+            }
+          }).catch(error => {
+            // 静默失败，不影响主流程
+          })
         }
       }, this.refreshInterval)
     },

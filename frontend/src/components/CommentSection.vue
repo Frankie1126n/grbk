@@ -4,7 +4,12 @@
 
     <!-- Comment Input -->
     <div class="comment-input-box card">
-      <el-avatar :src="userInfo.avatarUrl || defaultAvatar" :size="40" class="clickable-avatar" @click.native="previewAvatar(userInfo.avatarUrl || defaultAvatar)" />
+      <CroppedAvatar 
+        :src="userInfo.avatarUrl || defaultAvatar" 
+        :size="40" 
+        class="clickable-avatar" 
+        @click.native="previewAvatar(userInfo.avatarUrl || defaultAvatar)"
+      />
       <div class="input-area">
         <el-input
           v-model="newComment"
@@ -49,7 +54,12 @@
         </div>
 
         <div class="comment-header">
-          <el-avatar :src="comment.avatarUrl || defaultAvatar" :size="36" class="clickable-avatar" @click.native="goToUserProfile(comment.userId)" />
+          <CroppedAvatar 
+            :src="comment.avatarUrl || defaultAvatar" 
+            :size="36" 
+            class="clickable-avatar" 
+            @click.native="goToUserProfile(comment.userId)"
+          />
           <div class="user-info">
             <span class="username clickable" @click="goToUserProfile(comment.userId)">{{ comment.username }}</span>
             <span class="time">{{ formatTime(comment.createTime) }}</span>
@@ -121,7 +131,12 @@
         <div v-if="comment.replies && comment.replies.length > 0 && isExpanded(comment.id)" class="replies">
           <div v-for="reply in comment.replies" :key="reply.id" class="reply-item">
             <div class="reply-header">
-              <el-avatar :src="reply.avatarUrl || defaultAvatar" :size="28" class="clickable-avatar" @click.native="goToUserProfile(reply.userId)" />
+              <CroppedAvatar 
+                :src="reply.avatarUrl || defaultAvatar" 
+                :size="28" 
+                class="clickable-avatar" 
+                @click.native="goToUserProfile(reply.userId)"
+              />
               <div class="user-info">
                 <span class="username clickable" @click="goToUserProfile(reply.userId)">{{ reply.username }}</span>
                 <span v-if="reply.replyToUsername" class="reply-to">
@@ -153,12 +168,12 @@
     <!-- Image Preview Dialog -->
     <el-dialog
       :visible.sync="imagePreviewVisible"
-      width="450px"
-      top="20vh"
+      width="420px"
+      top="10vh"
       :append-to-body="true"
       custom-class="image-preview-dialog"
     >
-      <img :src="previewImageUrl" style="width: 400px; height: 400px; object-fit: contain;" alt="Preview" />
+      <img :src="previewImageUrl" class="preview-image" alt="Preview" />
     </el-dialog>
   </div>
 </template>
@@ -166,9 +181,13 @@
 <script>
 import { addComment, getCommentList, deleteComment, pinComment } from '@/api/comment'
 import { mapGetters } from 'vuex'
+import CroppedAvatar from '@/components/CroppedAvatar'
 
 export default {
   name: 'CommentSection',
+  components: {
+    CroppedAvatar
+  },
   props: {
     blogId: {
       type: Number,
@@ -846,8 +865,6 @@ export default {
 .clickable-avatar {
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
-  border: 2px solid #FFB7C5;
-  box-shadow: 0 2px 8px rgba(255, 183, 197, 0.3);
 }
 
 .clickable-avatar:hover {
@@ -936,9 +953,27 @@ export default {
 }
 
 .image-preview-dialog .el-dialog__body {
-  padding: 0;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 420px;
+}
+
+.image-preview-dialog .el-dialog__body img {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.preview-image {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 </style>

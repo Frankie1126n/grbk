@@ -8,7 +8,12 @@
       <div v-else-if="userProfile" class="profile-content card">
         <!-- User Header -->
         <div class="profile-header">
-          <el-avatar :src="userProfile.avatarUrl || defaultAvatar" :size="120" />
+          <CroppedAvatar 
+            :src="userProfile.avatarUrl || defaultAvatar" 
+            :size="120" 
+            :border-width="'3px'"
+            @click.native="previewAvatar(userProfile.avatarUrl || defaultAvatar)"
+          />
           <h2 class="username">{{ userProfile.username }}</h2>
           <p class="email">{{ userProfile.email }}</p>
           <span class="role-badge" :class="'role-' + userProfile.role">
@@ -58,21 +63,38 @@
         </div>
       </div>
     </div>
+
+    <!-- Image Preview Dialog -->
+    <el-dialog
+      :visible.sync="imagePreviewVisible"
+      width="420px"
+      top="10vh"
+      :append-to-body="true"
+      custom-class="image-preview-dialog"
+    >
+      <img :src="previewImageUrl" class="preview-image" alt="Avatar Preview" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getUserById } from '@/api/user'
 import { getBlogList } from '@/api/blog'
+import CroppedAvatar from '@/components/CroppedAvatar'
 
 export default {
   name: 'UserProfile',
+  components: {
+    CroppedAvatar
+  },
   data() {
     return {
       loading: false,
       userProfile: null,
       userBlogs: [],
-      defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      imagePreviewVisible: false,
+      previewImageUrl: ''
     }
   },
   mounted() {
@@ -146,6 +168,11 @@ export default {
     handleScroll() {
       // 这里可以添加滚动相关的逻辑
       // 例如检测是否滚动到特定区域来触发动画
+    },
+
+    previewAvatar(avatarUrl) {
+      this.previewImageUrl = avatarUrl
+      this.imagePreviewVisible = true
     }
   }
 }
@@ -228,6 +255,7 @@ export default {
 .profile-header >>> .el-avatar {
   border: 3px solid #FFB7C5;
   box-shadow: 0 4px 15px rgba(255, 183, 197, 0.3);
+  object-fit: cover;
 }
 
 .username {
@@ -430,5 +458,41 @@ export default {
   background: rgba(255, 255, 255, 1);
   border-color: #FFB7C5;
   transform: translateY(-2px);
+}
+
+/* Image Preview Dialog */
+.image-preview-dialog {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image-preview-dialog .el-dialog__header {
+  display: none;
+}
+
+.image-preview-dialog .el-dialog__body {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 420px;
+}
+
+.image-preview-dialog .el-dialog__body img {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.preview-image {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 </style>

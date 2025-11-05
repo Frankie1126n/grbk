@@ -125,6 +125,30 @@ public class BlogController {
     }
 
     /**
+     * 根据ID查询博客详情（不增加阅读量）
+     */
+    @ApiOperation("查询博客详情（不增加阅读量）")
+    @GetMapping("/{id}/detail")
+    public Result<Blog> getBlogDetailById(@PathVariable Long id, HttpServletRequest request) {
+        // 获取当前登录用户ID（用于权限判断）
+        Integer currentUserId = null;
+        String token = request.getHeader("Authorization");
+        if (token != null && !token.isEmpty()) {
+            try {
+                // 去除Bearer前缀
+                if (token.startsWith("Bearer ")) {
+                    token = token.substring(7);
+                }
+                currentUserId = userTokenUtil.getUserId(token);
+            } catch (Exception e) {
+                // Token无效或过期，忽略，按未登录处理
+            }
+        }
+        Blog blog = blogService.getBlogByIdWithoutIncrementingViewCount(id, currentUserId);
+        return Result.success(blog);
+    }
+
+    /**
      * 保存博客（新增或更新）
      */
     @ApiOperation("保存博客")

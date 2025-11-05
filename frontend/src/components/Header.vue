@@ -39,7 +39,11 @@
           
           <el-dropdown @command="handleCommand">
             <div class="user-info">
-              <el-avatar :src="userInfo.avatarUrl || defaultAvatar" :size="36" />
+              <CroppedAvatar 
+                :src="userInfo.avatarUrl || defaultAvatar" 
+                :size="36" 
+                :border-width="'2px'"
+              />
               <span class="username">{{ userInfo.username }}</span>
             </div>
             <el-dropdown-menu slot="dropdown">
@@ -58,9 +62,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import CroppedAvatar from '@/components/CroppedAvatar'
 
 export default {
   name: 'Header',
+  components: {
+    CroppedAvatar
+  },
   data() {
     return {
       scrolled: false,
@@ -315,6 +323,7 @@ export default {
 .user-info >>> .el-avatar {
   border: 2px solid #FFB7C5;
   box-shadow: 0 2px 8px rgba(255, 183, 197, 0.3);
+  object-fit: cover;
 }
 
 .username {
