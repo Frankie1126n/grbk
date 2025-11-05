@@ -25,11 +25,25 @@ export default {
 
 <style scoped>
 .footer {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(79, 172, 254, 0.2);
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(15px);
+  border-top: 2px solid rgba(255, 183, 197, 0.3);
   padding: 30px 0;
   margin-top: 40px;
+  position: relative;
+}
+
+/* 课本装饰 */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 1px dashed rgba(163, 230, 53, 0.2);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .container {
@@ -47,9 +61,10 @@ export default {
 }
 
 .copyright {
-  color: #666;
+  color: #6b6b6b;
   font-size: 14px;
   margin: 0;
+  font-weight: 500;
 }
 
 .footer-links {
@@ -59,18 +74,42 @@ export default {
 }
 
 .footer-links a {
-  color: #4facfe;
+  color: #FF9F43;
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 5px 10px;
 }
 
+/* 小三角旗效果 */
+.footer-links a.active::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 8px solid #FF9F43;
+}
+
+/* 从书包里拿出的动效 */
 .footer-links a:hover {
-  color: #00f2fe;
+  color: #FFB7C5;
+  animation: takeOut 0.2s ease;
+}
+
+@keyframes takeOut {
+  0% { transform: scale(0.8); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  50% { transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+  100% { transform: scale(1); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
 }
 
 .footer-links span {
-  color: #ddd;
+  color: #dcdcdc;
 }
 
 /* 响应式设计 */

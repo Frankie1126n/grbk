@@ -7,32 +7,32 @@
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
         <el-form-item prop="username">
           <el-input
-            v-model="loginForm.username"
-            prefix-icon="el-icon-user"
-            placeholder="请输入用户名"
-            :class="{ 'shake': errors.username }"
-            @focus="errors.username = false"
+              v-model="loginForm.username"
+              prefix-icon="el-icon-user"
+              placeholder="请输入用户名"
+              :class="{ 'shake': errors.username }"
+              @focus="errors.username = false"
           />
         </el-form-item>
 
         <el-form-item prop="password">
           <el-input
-            v-model="loginForm.password"
-            type="password"
-            prefix-icon="el-icon-lock"
-            placeholder="请输入密码"
-            :class="{ 'shake': errors.password }"
-            @focus="errors.password = false"
-            @keyup.enter.native="handleLogin"
+              v-model="loginForm.password"
+              type="password"
+              prefix-icon="el-icon-lock"
+              placeholder="请输入密码"
+              :class="{ 'shake': errors.password }"
+              @focus="errors.password = false"
+              @keyup.enter.native="handleLogin"
           />
         </el-form-item>
 
         <el-form-item>
           <el-button
-            type="primary"
-            class="login-btn"
-            :loading="loading"
-            @click="handleLogin"
+              type="primary"
+              class="login-btn"
+              :loading="loading"
+              @click="handleLogin"
           >
             {{ loading ? '登录中...' : '登录' }}
           </el-button>
@@ -77,27 +77,27 @@ export default {
   },
   methods: {
     ...mapActions('user', ['login']),
-    
+
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          
+
           this.login(this.loginForm)
-            .then(() => {
-              this.$message.success('登录成功')
-              
-              // 跳转到首页或原页面
-              const redirect = this.$route.query.redirect || '/home'
-              this.$router.push(redirect)
-            })
-            .catch(() => {
-              this.errors.username = true
-              this.errors.password = true
-            })
-            .finally(() => {
-              this.loading = false
-            })
+              .then(() => {
+                this.$message.success('登录成功')
+
+                // 跳转到首页或原页面
+                const redirect = this.$route.query.redirect || '/home'
+                this.$router.push(redirect)
+              })
+              .catch(() => {
+                this.errors.username = true
+                this.errors.password = true
+              })
+              .finally(() => {
+                this.loading = false
+              })
         } else {
           this.errors.username = true
           this.errors.password = true
@@ -146,7 +146,7 @@ export default {
   background: rgba(255, 251, 235, 0.98);
   backdrop-filter: blur(25px) saturate(150%);
   box-shadow: 0 15px 40px rgba(255, 183, 197, 0.25),
-              0 5px 15px rgba(163, 230, 53, 0.1);
+  0 5px 15px rgba(163, 230, 53, 0.1);
   border: 2px solid rgba(255, 183, 197, 0.4);
   border-radius: 16px;
   animation: floatIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -226,7 +226,7 @@ export default {
   border-color: #FFB7C5;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 0 0 4px rgba(255, 183, 197, 0.1),
-              0 4px 15px rgba(255, 183, 197, 0.2);
+  0 4px 15px rgba(255, 183, 197, 0.2);
   transform: translateY(-1px);
 }
 
@@ -249,7 +249,7 @@ export default {
   font-weight: 700;
   letter-spacing: 1px;
   box-shadow: 0 6px 20px rgba(255, 183, 197, 0.4),
-              0 2px 8px rgba(255, 159, 67, 0.2);
+  0 2px 8px rgba(255, 159, 67, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -277,7 +277,7 @@ export default {
 .login-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(255, 183, 197, 0.5),
-              0 3px 12px rgba(255, 159, 67, 0.3);
+  0 3px 12px rgba(255, 159, 67, 0.3);
   border-color: rgba(255, 255, 255, 0.8);
 }
 

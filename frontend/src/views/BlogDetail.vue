@@ -4,12 +4,12 @@
       <div v-if="loading" class="loading-wrapper">
         <div class="loading"></div>
       </div>
-      
+
       <div v-else-if="currentBlog" class="blog-detail card">
         <!-- Header -->
         <div class="blog-header">
           <h1 class="blog-title">{{ currentBlog.title }}</h1>
-          <div class="blog-meta">
+          <div class="blog-meta" ref="blogMeta">
             <span class="meta-item clickable" @click="goToUserProfile(currentBlog.userId)">
               <i class="el-icon-user"></i>
               {{ currentBlog.username }}
@@ -35,7 +35,7 @@
               {{ currentBlog.createTime }}
             </span>
           </div>
-          
+
           <!-- Tags -->
           <div v-if="currentBlog.tags && currentBlog.tags.length" class="blog-tags">
             <span
@@ -47,10 +47,10 @@
             </span>
           </div>
         </div>
-        
+
         <!-- Content -->
         <div class="blog-content" v-html="formattedContent"></div>
-        
+
         <!-- Interaction Buttons -->
         <div class="interaction-bar">
           <el-button
@@ -68,7 +68,7 @@
             {{ hasFavorited ? '已收藏' : '收藏' }} ({{ currentBlog.favoriteCount || 0 }})
           </el-button>
         </div>
-        
+
         <!-- Actions -->
         <div class="blog-actions">
           <el-button @click="goBack">返回列表</el-button>
@@ -117,17 +117,37 @@ export default {
       hasFavorited: false
     }
   },
+  mounted() {
+    // 添加滚动监听
+    window.addEventListener('scroll', this.handleScroll)
+
+    // 初始加载时触发动画
+    this.$nextTick(() => {
+      const blogMetaElement = this.$refs.blogMeta
+      if (blogMetaElement) {
+        blogMetaElement.classList.add('animate-enter')
+      }
+    })
+  },
+  beforeDestroy() {
+    // 移除滚动监听
+    window.removeEventListener('scroll', this.handleScroll)
+    // 清理全局方法
+    delete window.previewBlogImage
+    // 清除定时器
+    this.stopAutoRefresh()
+  },
   computed: {
     ...mapGetters('blog', ['currentBlog']),
-    
+
     formattedContent() {
       if (!this.currentBlog || !this.currentBlog.content) {
         return ''
       }
-      
+
       const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
       let content = this.currentBlog.content
-      
+
       // 转换 Markdown 图片语法为 HTML img 标签
       content = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
         // 如果是相对路径，添加完整 URL
@@ -136,10 +156,10 @@ export default {
         }
         return `<img src="${src}" alt="${alt}" onclick="window.previewBlogImage('${src}')" style="width: auto; max-height: 50px; border-radius: 8px; margin: 15px 0; cursor: pointer; display: inline-block; vertical-align: middle;" />`
       })
-      
+
       // 转换换行符为 <br>
       content = content.replace(/\n/g, '<br>')
-      
+
       return content
     }
   },
@@ -153,15 +173,9 @@ export default {
     // 启动定时刷新
     this.startAutoRefresh()
   },
-  beforeDestroy() {
-    // 清理全局方法
-    delete window.previewBlogImage
-    // 清除定时器
-    this.stopAutoRefresh()
-  },
   methods: {
     ...mapActions('blog', ['getBlogById']),
-    
+
     async loadBlogDetail() {
       const id = this.$route.params.id
       if (!id) {
@@ -169,7 +183,7 @@ export default {
         this.$router.push('/home')
         return
       }
-      
+
       this.loading = true
       try {
         await this.getBlogById(id)
@@ -182,7 +196,7 @@ export default {
         this.loading = false
       }
     },
-    
+
     async loadInteractionStatus() {
       try {
         const blogId = this.$route.params.id
@@ -196,7 +210,7 @@ export default {
         // 静默失败，不影响主流程
       }
     },
-    
+
     async toggleLike() {
       try {
         const blogId = this.$route.params.id
@@ -215,7 +229,7 @@ export default {
         this.$message.error(error.message || '操作失败')
       }
     },
-    
+
     async toggleFavorite() {
       try {
         const blogId = this.$route.params.id
@@ -234,15 +248,15 @@ export default {
         this.$message.error(error.message || '操作失败')
       }
     },
-    
+
     goBack() {
       this.$router.push('/home')
     },
-    
+
     goToUserProfile(userId) {
       this.$router.push(`/user/${userId}`)
     },
-    
+
     startAutoRefresh() {
       // 定时刷新博客详情和评论
       this.refreshTimer = setInterval(() => {
@@ -252,12 +266,18 @@ export default {
         }
       }, this.refreshInterval)
     },
-    
+
     stopAutoRefresh() {
       if (this.refreshTimer) {
         clearInterval(this.refreshTimer)
         this.refreshTimer = null
       }
+    },
+
+    // 滚动处理函数
+    handleScroll() {
+      // 这里可以添加滚动相关的逻辑
+      // 例如检测是否滚动到特定区域来触发动画
     }
   }
 }
@@ -305,6 +325,28 @@ export default {
   gap: 20px;
   margin-bottom: 15px;
 }
+
+/* 社团展示区域滚动触发效果 */
+.blog-meta.animate-enter .meta-item {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: popUpMeta 0.3s ease-out forwards;
+}
+
+@keyframes popUpMeta {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 为每个元数据项设置延迟动画 */
+.blog-meta.animate-enter .meta-item:nth-child(1) { animation-delay: 0.1s; }
+.blog-meta.animate-enter .meta-item:nth-child(2) { animation-delay: 0.2s; }
+.blog-meta.animate-enter .meta-item:nth-child(3) { animation-delay: 0.3s; }
+.blog-meta.animate-enter .meta-item:nth-child(4) { animation-delay: 0.4s; }
+.blog-meta.animate-enter .meta-item:nth-child(5) { animation-delay: 0.5s; }
+.blog-meta.animate-enter .meta-item:nth-child(6) { animation-delay: 0.6s; }
 
 .meta-item {
   color: #9ca3af;
@@ -460,11 +502,11 @@ export default {
   .blog-detail {
     padding: 20px;
   }
-  
+
   .blog-title {
     font-size: 24px;
   }
-  
+
   .blog-content {
     font-size: 14px;
   }

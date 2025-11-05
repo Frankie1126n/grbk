@@ -39,11 +39,8 @@
             <if test="publishStatus != null">
                 AND b.publish_status = #{publishStatus}
             </if>
-            <!-- 隐私权限判断：公开文章 OR 管理员 OR 作者本人 -->
+            <!-- 隐私权限判断：公开文章 OR 作者本人 -->
             <choose>
-                <when test="isAdmin">
-                    <!-- 管理员能看到所有文章 -->
-                </when>
                 <when test="currentUserId != null">
                     <!-- 登录用户：公开文章 + 自己的私密文章 -->
                     AND (b.is_public = 1 OR b.user_id = #{currentUserId})

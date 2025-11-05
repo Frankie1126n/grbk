@@ -42,19 +42,22 @@ const actions = {
   // 用户登录
   async login({ commit }, loginData) {
     try {
+      console.log('Making login API call with data:', loginData)
       const response = await login(loginData)
+      console.log('Login API response:', response)
       // response.data is the entire data object from backend
       const { token, ...userInfo } = response.data
-      
-      console.log('Login response data:', response.data)
-      console.log('Token:', token)
-      console.log('UserInfo:', userInfo)
       
       commit('SET_TOKEN', token)
       commit('SET_USER_INFO', userInfo)
       
       return response
     } catch (error) {
+      console.error('Login API error:', error)
+      // Better error handling
+      if (error.response && error.response.data) {
+        return Promise.reject(new Error(error.response.data.message || '登录失败'))
+      }
       return Promise.reject(error)
     }
   },

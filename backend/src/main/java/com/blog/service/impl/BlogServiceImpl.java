@@ -42,10 +42,8 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public IPage<Blog> getBlogList(Integer current, Integer size, String title, Integer categoryId, Integer tagId, Integer userId, Integer currentUserId) {
         Page<Blog> page = new Page<>(current, size);
-        // 检查是否是admin
-        boolean isAdmin = currentUserId != null && isAdmin(currentUserId);
-        // 只查询已发布的文章（管理员也不能看到别人的私密文章）
-        return blogMapper.selectBlogPage(page, title, categoryId, tagId, userId, currentUserId, false, 1);
+        // 不再需要检查是否是admin，所有用户（包括admin）都遵循相同的隐私规则
+        return blogMapper.selectBlogPage(page, title, categoryId, tagId, userId, currentUserId, 1);
     }
 
     @Override
@@ -54,6 +52,7 @@ public class BlogServiceImpl implements BlogService {
         // 查询当前用户的私密文章（isPublic=0）
         return blogMapper.selectMyPrivateBlogs(page, userId);
     }
+    
     @Override
     public Blog getBlogById(Long id, Integer currentUserId) {
         Blog blog = blogMapper.selectBlogDetailById(id);

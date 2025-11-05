@@ -41,7 +41,7 @@
     </div>
 
     <!-- Comment List -->
-    <div class="comment-list" v-loading="loading">
+    <div class="comment-list" ref="commentList" v-loading="loading">
       <div v-for="comment in comments" :key="comment.id" class="comment-item card">
         <!-- Pinned Badge -->
         <div v-if="comment.isPinned === 1" class="pinned-badge">
@@ -221,6 +221,14 @@ export default {
       this.previewImageUrl = src
       this.imagePreviewVisible = true
     }
+    
+    // 初始加载时触发动画
+    this.$nextTick(() => {
+      const commentListElement = this.$refs.commentList
+      if (commentListElement) {
+        commentListElement.classList.add('animate-enter')
+      }
+    })
   },
   beforeDestroy() {
     // 清理全局方法
@@ -347,6 +355,12 @@ export default {
       } catch (error) {
         this.$message.error(error.message || '操作失败')
       }
+    },
+
+    // 滚动处理函数
+    handleScroll() {
+      // 这里可以添加滚动相关的逻辑
+      // 例如检测是否滚动到特定区域来触发动画
     },
 
     canManageComment(comment) {
@@ -607,96 +621,115 @@ export default {
   gap: 20px;
 }
 
+/* 社团展示区域滚动触发效果 */
+.comment-list.animate-enter .comment-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: popUpComment 0.3s ease-out forwards;
+}
+
+@keyframes popUpComment {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 为每个评论项设置延迟动画 */
+.comment-list.animate-enter .comment-item:nth-child(1) { animation-delay: 0.1s; }
+.comment-list.animate-enter .comment-item:nth-child(2) { animation-delay: 0.2s; }
+.comment-list.animate-enter .comment-item:nth-child(3) { animation-delay: 0.3s; }
+.comment-list.animate-enter .comment-item:nth-child(4) { animation-delay: 0.4s; }
+.comment-list.animate-enter .comment-item:nth-child(5) { animation-delay: 0.5s; }
+
 .comment-item {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 183, 197, 0.2);
   position: relative;
+  transition: all 0.3s ease;
 }
 
-.pinned-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
+.comment-item:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateX(5px);
+  border-color: rgba(255, 183, 197, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.2);
 }
 
-.comment-header,
-.reply-header {
+.comment-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
 }
 
-.user-info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+.comment-avatar {
+  flex-shrink: 0;
 }
 
 .username {
   font-weight: 600;
-  color: #4a4a4a;
-}
-
-.reply-to {
-  color: #FF9F43;
-  font-size: 14px;
+  color: #333;
+  margin: 0;
+  font-size: 15px;
 }
 
 .time {
+  color: #999;
   font-size: 12px;
-  color: #9ca3af;
+  margin-left: auto;
+}
+
+.comment-content {
+  color: #4a4a4a;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  word-wrap: break-word;
 }
 
 .comment-actions {
-  cursor: pointer;
-  color: #666;
-}
-
-.action-trigger {
-  padding: 5px 10px;
-  border-radius: 4px;
-  transition: all 0.3s;
-}
-
-.action-trigger:hover {
-  background: rgba(255, 183, 197, 0.1);
-}
-
-.comment-content,
-.reply-content {
-  margin-bottom: 12px;
-  line-height: 1.6;
-  color: #4a4a4a;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.comment-footer,
-.reply-footer {
   display: flex;
-  gap: 20px;
+  gap: 15px;
+  font-size: 13px;
+  color: #999;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.action-item i {
+  font-size: 14px;
+}
+
+.action-item:hover {
+  color: #FF9F43;
 }
 
 .reply-btn {
-  font-size: 14px;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: color 0.3s;
+  margin-left: auto;
 }
 
-.reply-btn:hover {
-  color: #FFB7C5;
+.pinned-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF9F43 100%);
+  color: white;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 10px;
+  vertical-align: middle;
 }
 
 .expand-btn {
-  font-size: 14px;
   color: #FFB7C5;
   cursor: pointer;
   margin-left: 20px;

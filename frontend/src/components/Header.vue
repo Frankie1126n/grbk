@@ -170,6 +170,19 @@ export default {
   font-weight: 800;
   letter-spacing: 2px;
   position: relative;
+  transition: transform 0.2s ease;
+}
+
+/* 课本翻页效果 */
+.logo-area h1:hover {
+  transform: rotate(3deg);
+  animation: pageFlip 0.3s ease;
+}
+
+@keyframes pageFlip {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+  100% { transform: rotate(3deg); }
 }
 
 /* 小装饰 - 星星贴纸 */
@@ -201,9 +214,10 @@ export default {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   padding: 8px 0;
+  cursor: pointer;
 }
 
-/* 铅笔线条效果 */
+/* 课本翻页效果 */
 .nav-item::before {
   content: '';
   position: absolute;
@@ -213,7 +227,7 @@ export default {
   height: 2px;
   background: linear-gradient(90deg, #FFB7C5, #FF9F43);
   transform: translateX(-50%);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(255, 183, 197, 0.4);
 }
@@ -221,6 +235,17 @@ export default {
 .nav-item:hover::before,
 .nav-item.active::before {
   width: 100%;
+}
+
+/* 粉笔收尾的轻颤效果 */
+.nav-item.active::before {
+  animation: chalkEndShake 0.3s ease-in-out;
+}
+
+@keyframes chalkEndShake {
+  0%, 100% { transform: translateX(-50%); }
+  25% { transform: translateX(-52%); }
+  75% { transform: translateX(-48%); }
 }
 
 .nav-item:hover {

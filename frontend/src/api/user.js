@@ -4,10 +4,14 @@ import request from '@/utils/request'
  * 用户登录
  */
 export function login(data) {
+  console.log('Calling login API with data:', data)
   return request({
     url: '/user/login',
     method: 'post',
     data
+  }).catch(error => {
+    console.error('API call failed:', error)
+    throw error
   })
 }
 

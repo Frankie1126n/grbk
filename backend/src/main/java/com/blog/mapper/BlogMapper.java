@@ -24,7 +24,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
      * @param tagId 标签ID
      * @param userId 筛选用户ID
      * @param currentUserId 当前登录用户ID
-     * @param isAdmin 是否为管理员
      * @param publishStatus 发布状态
      * @return 博客分页列表
      */
@@ -34,7 +33,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
                                @Param("tagId") Integer tagId,
                                @Param("userId") Integer userId,
                                @Param("currentUserId") Integer currentUserId,
-                               @Param("isAdmin") boolean isAdmin,
                                @Param("publishStatus") Integer publishStatus);
 
     /**

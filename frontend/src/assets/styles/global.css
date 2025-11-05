@@ -70,10 +70,10 @@ body::after {
   }
 }
 
-/* 滚动条样式 - 日漫校园风格 */
+/* 滚动条样式 - 铅笔形状 */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -82,16 +82,46 @@ body::after {
   border: 1px solid rgba(255, 183, 197, 0.2);
 }
 
+/* 铅笔形状滚动条 */
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #FFB7C5 0%, #FF9F43 100%);
   border-radius: 10px;
   border: 2px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 2px 4px rgba(255, 183, 197, 0.3);
+  position: relative;
+}
+
+/* 铅笔笔尖效果 */
+::-webkit-scrollbar-thumb::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 5px solid #FF9F43;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #FF9F43 0%, #FFB7C5 100%);
   box-shadow: 0 2px 8px rgba(255, 159, 67, 0.4);
+}
+
+/* 滚动到顶部/底部时的铅笔轻敲效果 */
+::-webkit-scrollbar-thumb:vertical:decrement {
+  animation: pencilTap 0.05s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:vertical:increment {
+  animation: pencilTap 0.05s ease-in-out;
+}
+
+@keyframes pencilTap {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(1px); }
 }
 
 /* 按钮通用样式 - 日漫校园风格 */
@@ -193,6 +223,106 @@ body::after {
   font-weight: 700;
   letter-spacing: 0.5px;
   position: relative;
+}
+
+/* 加载动画 - 铅笔写字效果 */
+.loading-pencil {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+
+.loading-pencil::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  background: #87CEEB;
+  border-radius: 1px;
+  transform-origin: left center;
+  animation: pencilWrite 1.5s infinite;
+}
+
+@keyframes pencilWrite {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(270deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* 加载时间超过3秒时的小困猫 */
+.loading-cat {
+  display: inline-block;
+  margin-left: 10px;
+  opacity: 0;
+  animation: showCat 3s forwards;
+}
+
+@keyframes showCat {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.loading-cat::before {
+  content: '😴';
+  font-size: 16px;
+  animation: yawn 2s infinite;
+}
+
+@keyframes yawn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 成功提示 Toast 样式 */
+.success-toast {
+  background: rgba(255, 251, 235, 0.95);
+  border: 1px dashed #FFB7C5;
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.3);
+}
+
+.success-toast::before {
+  content: '⭐';
+  font-size: 16px;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* 错误提示弹窗样式 */
+.error-dialog {
+  border-radius: 12px 10px 14px 8px; /* 揉皱的纸团轮廓 */
+  overflow: hidden;
+}
+
+.error-dialog::before {
+  content: '😢';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
 }
 
 /* 加载动画 - 日漫校园风格 */

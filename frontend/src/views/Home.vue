@@ -2,7 +2,7 @@
   <div class="home-container">
     <!-- Header -->
     <Header />
-    
+
     <!-- Main Content -->
     <div class="content-wrapper">
       <div class="container">
@@ -11,7 +11,7 @@
           <div class="blog-list-area">
             <BlogList />
           </div>
-          
+
           <!-- Right: Sidebar -->
           <div class="sidebar-area">
             <Sidebar />
@@ -19,10 +19,10 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Footer -->
     <Footer />
-    
+
     <!-- Back to Top Button -->
     <BackToTop />
   </div>
@@ -51,6 +51,10 @@ export default {
       refreshInterval: 5000 // 5秒刷新一次
     }
   },
+  mounted() {
+    // 添加滚动监听
+    window.addEventListener('scroll', this.handleScroll)
+  },
   created() {
     // 初始化数据
     this.initData()
@@ -58,6 +62,8 @@ export default {
     this.startAutoRefresh()
   },
   beforeDestroy() {
+    // 移除滚动监听
+    window.removeEventListener('scroll', this.handleScroll)
     // 组件销毁时清除定时器
     this.stopAutoRefresh()
   },
@@ -65,7 +71,7 @@ export default {
     ...mapActions('blog', ['getBlogList']),
     ...mapActions('category', ['getCategoryList']),
     ...mapActions('tag', ['getTagList']),
-    
+
     async initData() {
       try {
         await Promise.all([
@@ -77,19 +83,25 @@ export default {
         console.error('数据加载失败:', error)
       }
     },
-    
+
     startAutoRefresh() {
       // 定时刷新博客列表
       this.refreshTimer = setInterval(() => {
         this.getBlogList()
       }, this.refreshInterval)
     },
-    
+
     stopAutoRefresh() {
       if (this.refreshTimer) {
         clearInterval(this.refreshTimer)
         this.refreshTimer = null
       }
+    },
+
+    // 滚动处理函数
+    handleScroll() {
+      // 这里可以添加滚动相关的逻辑
+      // 例如检测是否滚动到特定区域来触发动画
     }
   }
 }
@@ -113,7 +125,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 30%, rgba(255, 183, 197, 0.1) 0%, transparent 40%),
     radial-gradient(circle at 80% 70%, rgba(163, 230, 53, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 50% 50%, rgba(135, 206, 235, 0.06) 0%, transparent 50%);
@@ -160,7 +172,7 @@ export default {
   .main-content {
     grid-template-columns: 1fr;
   }
-  
+
   .sidebar-area {
     position: static;
   }

@@ -4,7 +4,7 @@
       <div v-if="loading" class="loading-wrapper">
         <div class="loading"></div>
       </div>
-      
+
       <div v-else-if="userProfile" class="profile-content card">
         <!-- User Header -->
         <div class="profile-header">
@@ -15,7 +15,7 @@
             {{ userProfile.role === 'admin' ? '管理员' : '普通用户' }}
           </span>
         </div>
-        
+
         <!-- User Stats -->
         <div class="user-stats">
           <div class="stat-item">
@@ -27,9 +27,9 @@
             <div class="stat-label">总阅读</div>
           </div>
         </div>
-        
+
         <!-- User Blogs -->
-        <div class="user-blogs">
+        <div class="user-blogs" ref="blogList">
           <h3 class="section-title gradient-text">Ta的文章</h3>
           <div v-if="userBlogs.length > 0" class="blog-list">
             <div
@@ -51,7 +51,7 @@
             <p>该用户暂无文章</p>
           </div>
         </div>
-        
+
         <!-- Back Button -->
         <div class="actions">
           <el-button @click="goBack">返回</el-button>
@@ -75,6 +75,22 @@ export default {
       defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
     }
   },
+  mounted() {
+    // 添加滚动监听
+    window.addEventListener('scroll', this.handleScroll)
+
+    // 初始加载时触发动画
+    this.$nextTick(() => {
+      const blogListElement = this.$refs.blogList
+      if (blogListElement) {
+        blogListElement.classList.add('animate-enter')
+      }
+    })
+  },
+  beforeDestroy() {
+    // 移除滚动监听
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   computed: {
     totalViews() {
       return this.userBlogs.reduce((sum, blog) => sum + (blog.viewCount || 0), 0)
@@ -91,13 +107,13 @@ export default {
         this.$router.push('/home')
         return
       }
-      
+
       this.loading = true
       try {
         // 获取用户信息
         const userRes = await getUserById(userId)
         this.userProfile = userRes.data
-        
+
         // 获取用户文章
         const blogsRes = await getBlogList({
           current: 1,
@@ -112,18 +128,24 @@ export default {
         this.loading = false
       }
     },
-    
+
     goToBlogDetail(id) {
       this.$router.push(`/blog/${id}`)
     },
-    
+
     goBack() {
       this.$router.go(-1)
     },
-    
+
     formatTime(time) {
       if (!time) return ''
       return time.split(' ')[0]
+    },
+
+    // 滚动处理函数
+    handleScroll() {
+      // 这里可以添加滚动相关的逻辑
+      // 例如检测是否滚动到特定区域来触发动画
     }
   }
 }
@@ -143,7 +165,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 30%, rgba(255, 183, 197, 0.1) 0%, transparent 40%),
     radial-gradient(circle at 80% 70%, rgba(163, 230, 53, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 50% 50%, rgba(135, 206, 235, 0.06) 0%, transparent 50%);
@@ -276,6 +298,27 @@ export default {
 .user-blogs {
   margin-bottom: 30px;
 }
+
+/* 社团展示区域滚动触发效果 */
+.user-blogs.animate-enter .blog-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: popUpFromBottom 0.3s ease-out forwards;
+}
+
+@keyframes popUpFromBottom {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 为每个卡片设置延迟动画 */
+.user-blogs.animate-enter .blog-item:nth-child(1) { animation-delay: 0.1s; }
+.user-blogs.animate-enter .blog-item:nth-child(2) { animation-delay: 0.2s; }
+.user-blogs.animate-enter .blog-item:nth-child(3) { animation-delay: 0.3s; }
+.user-blogs.animate-enter .blog-item:nth-child(4) { animation-delay: 0.4s; }
+.user-blogs.animate-enter .blog-item:nth-child(5) { animation-delay: 0.5s; }
 
 .section-title {
   font-size: 20px;

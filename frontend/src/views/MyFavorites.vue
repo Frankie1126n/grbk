@@ -21,17 +21,18 @@
       </div>
 
       <!-- Favorites List -->
-      <div v-else-if="favoriteList.length > 0">
+      <div v-else-if="favoriteList.length > 0" class="blog-list" ref="blogList">
         <div
-          v-for="blog in favoriteList"
+          v-for="(blog, index) in favoriteList"
           :key="blog.id"
           class="blog-card card"
+          :data-index="index + 1"
           @click="goToBlogDetail(blog.id)"
         >
           <div v-if="blog.coverImage" class="cover-image">
             <img :src="blog.coverImage" :alt="blog.title" />
           </div>
-          
+
           <div class="blog-content">
             <h3 class="blog-title">
               {{ blog.title }}
@@ -40,7 +41,7 @@
               </el-tag>
             </h3>
             <p class="blog-summary">{{ blog.summary || '暂无摘要' }}</p>
-            
+
             <div class="blog-meta">
               <span class="meta-item" @click.stop="goToUserProfile(blog.userId)">
                 <i class="el-icon-user"></i>
@@ -118,6 +119,22 @@ export default {
       total: 0
     }
   },
+  mounted() {
+    // 添加滚动监听
+    window.addEventListener('scroll', this.handleScroll)
+
+    // 初始加载时触发动画
+    this.$nextTick(() => {
+      const blogListElement = this.$refs.blogList
+      if (blogListElement) {
+        blogListElement.classList.add('animate-enter')
+      }
+    })
+  },
+  beforeDestroy() {
+    // 移除滚动监听
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   created() {
     this.loadFavorites()
   },
@@ -160,12 +177,12 @@ export default {
       const date = new Date(time)
       const now = new Date()
       const diff = now - date
-      
+
       if (diff < 60000) return '刚刚'
       if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`
       if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`
       if (diff < 2592000000) return `${Math.floor(diff / 86400000)}天前`
-      
+
       return time.split(' ')[0]
     },
 
@@ -176,10 +193,10 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         })
-        
+
         await unfavoriteBlog(blogId)
         this.$message.success('取消收藏成功')
-        
+
         // 刷新列表
         await this.loadFavorites()
       } catch (error) {
@@ -187,6 +204,12 @@ export default {
           this.$message.error(error.message || '操作失败')
         }
       }
+    },
+
+    // 滚动处理函数
+    handleScroll() {
+      // 这里可以添加滚动相关的逻辑
+      // 例如检测是否滚动到特定区域来触发动画
     }
   }
 }
@@ -223,6 +246,54 @@ export default {
   color: #666;
   font-size: 16px;
   margin: 0;
+}
+
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* 课程列表区域滚动触发效果 */
+.blog-list.animate-enter .blog-card {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 为每个卡片设置延迟动画 */
+.blog-list.animate-enter .blog-card:nth-child(1) { animation-delay: 0.1s; }
+.blog-list.animate-enter .blog-card:nth-child(2) { animation-delay: 0.2s; }
+.blog-list.animate-enter .blog-card:nth-child(3) { animation-delay: 0.3s; }
+.blog-list.animate-enter .blog-card:nth-child(4) { animation-delay: 0.4s; }
+.blog-list.animate-enter .blog-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* 课本页码效果 */
+.blog-card::after {
+  content: 'P' attr(data-index);
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  color: rgba(255, 183, 197, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.blog-list.animate-enter .blog-card:hover::after {
+  opacity: 1;
+  animation: fadeOutPageNumber 0.3s 0.3s forwards;
+}
+
+@keyframes fadeOutPageNumber {
+  to { opacity: 0; }
 }
 
 .skeleton-wrapper {
@@ -396,7 +467,7 @@ export default {
   .blog-card {
     flex-direction: column;
   }
-  
+
   .cover-image {
     width: 100%;
   }

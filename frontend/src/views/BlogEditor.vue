@@ -1,10 +1,10 @@
 <template>
   <div class="blog-editor-page">
-    <div class="editor-container">
+    <div ref="editorContainer" class="editor-container card">
       <div class="editor-header">
         <h2>{{ isEdit ? '编辑文章' : '发布文章' }}</h2>
       </div>
-      
+
       <el-form
         ref="blogForm"
         :model="blogForm"
@@ -220,7 +220,7 @@ export default {
   },
   mounted() {
     this.loadData()
-    
+
     // 如果有 id 参数，则是编辑模式
     if (this.$route.params.id) {
       this.isEdit = true
@@ -273,7 +273,7 @@ export default {
       } catch (error) {
         this.$message.error('图片上传失败')
       }
-      
+
       // 清空 input
       e.target.value = ''
     },
@@ -282,12 +282,12 @@ export default {
       const startPos = textarea.selectionStart
       const endPos = textarea.selectionEnd
       const content = this.blogForm.content
-      
-      this.blogForm.content = 
-        content.substring(0, startPos) + 
-        text + 
+
+      this.blogForm.content =
+        content.substring(0, startPos) +
+        text +
         content.substring(endPos)
-      
+
       // 设置光标位置
       this.$nextTick(() => {
         const newPos = startPos + text.length
@@ -340,6 +340,18 @@ export default {
               type: 'success',
               duration: 1500
             })
+
+            // 添加课本翻页动画
+            const editorContainer = this.$refs.editorContainer
+            if (editorContainer) {
+              editorContainer.classList.add('page-flip')
+
+              // 移除动画类以便下次使用
+              setTimeout(() => {
+                editorContainer.classList.remove('page-flip')
+              }, 500)
+            }
+
             // 等待消息显示后跳转
             setTimeout(() => {
               this.$router.push('/home')
@@ -680,13 +692,37 @@ export default {
   .editor-container {
     padding: 30px 20px;
   }
-  
+
   .editor-header h2 {
     font-size: 26px;
   }
-  
+
   .editor-header h2::before {
     left: 10%;
+  }
+}
+
+/* 课本翻页动画 */
+.page-flip {
+  animation: pageFlip 0.5s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes pageFlip {
+  0% {
+    transform: rotateY(0deg);
+    box-shadow: 0 8px 32px rgba(255, 183, 197, 0.25),
+                0 4px 12px rgba(163, 230, 53, 0.1);
+  }
+  50% {
+    transform: rotateY(90deg);
+    box-shadow: 0 0 0 rgba(255, 183, 197, 0),
+                0 0 0 rgba(163, 230, 53, 0);
+  }
+  100% {
+    transform: rotateY(0deg);
+    box-shadow: 0 8px 32px rgba(255, 183, 197, 0.25),
+                0 4px 12px rgba(163, 230, 53, 0.1);
   }
 }
 </style>

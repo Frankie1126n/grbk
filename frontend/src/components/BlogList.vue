@@ -13,9 +13,10 @@
     <!-- Blog Cards -->
     <div v-else-if="blogList.length > 0">
       <div
-        v-for="blog in blogList"
+        v-for="(blog, index) in blogList"
         :key="blog.id"
         class="blog-card card"
+        :data-index="index + 1"
       >
         <div v-if="blog.coverImage" class="cover-image" @click="goToBlogDetail(blog.id)">
           <img :src="blog.coverImage" :alt="blog.title" />
@@ -110,6 +111,22 @@ export default {
       loading: false
     }
   },
+  mounted() {
+    // 添加滚动监听
+    window.addEventListener('scroll', this.handleScroll)
+    
+    // 初始加载时触发动画
+    this.$nextTick(() => {
+      const blogListElement = this.$el
+      if (blogListElement) {
+        blogListElement.classList.add('animate-enter')
+      }
+    })
+  },
+  beforeDestroy() {
+    // 移除滚动监听
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   computed: {
     ...mapGetters('blog', ['blogList', 'currentPage', 'pageSize', 'total']),
     ...mapGetters('user', ['userInfo'])
@@ -175,6 +192,12 @@ export default {
           this.$message.error(error.message || '删除失败')
         }
       }
+    },
+    
+    // 滚动处理函数
+    handleScroll() {
+      // 这里可以添加滚动相关的逻辑
+      // 例如检测是否滚动到特定区域来触发动画
     }
   }
 }
@@ -185,6 +208,48 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 25px;
+}
+
+/* 课程列表区域滚动触发效果 */
+.blog-list.animate-enter .blog-card {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 为每个卡片设置延迟动画 */
+.blog-list.animate-enter .blog-card:nth-child(1) { animation-delay: 0.1s; }
+.blog-list.animate-enter .blog-card:nth-child(2) { animation-delay: 0.2s; }
+.blog-list.animate-enter .blog-card:nth-child(3) { animation-delay: 0.3s; }
+.blog-list.animate-enter .blog-card:nth-child(4) { animation-delay: 0.4s; }
+.blog-list.animate-enter .blog-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* 课本页码效果 */
+.blog-card::after {
+  content: 'P' attr(data-index);
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  color: rgba(255, 183, 197, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.blog-list.animate-enter .blog-card:hover::after {
+  opacity: 1;
+  animation: fadeOutPageNumber 0.3s 0.3s forwards;
+}
+
+@keyframes fadeOutPageNumber {
+  to { opacity: 0; }
 }
 
 .skeleton-wrapper {

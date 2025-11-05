@@ -236,6 +236,18 @@ export default {
   align-items: center;
   color: #FF9F43;
   font-weight: 700;
+  position: relative;
+}
+
+/* 铅笔分隔线装饰 */
+.card-title::after {
+  content: '✏️';
+  position: absolute;
+  right: -5px;
+  bottom: -15px;
+  font-size: 16px;
+  opacity: 0.5;
+  transform: rotate(20deg);
 }
 
 .card-title .el-button--text {

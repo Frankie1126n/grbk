@@ -10,7 +10,7 @@
       :accept="accept"
       :disabled="disabled"
     >
-      <div class="upload-trigger">
+      <div ref="uploadTrigger" class="upload-trigger">
         <img v-if="imageUrl" :src="imageUrl" class="upload-image" />
         <div v-else class="upload-placeholder">
           <i :class="icon"></i>
@@ -114,6 +114,18 @@ export default {
         this.imageUrl = imageUrl
         this.$emit('input', imageUrl)
         this.$emit('success', imageUrl)
+        
+        // 添加笔记本翻开动画
+        const uploadTrigger = this.$refs.uploadTrigger
+        if (uploadTrigger) {
+          uploadTrigger.classList.add('notebook-flip')
+          
+          // 移除动画类以便下次使用
+          setTimeout(() => {
+            uploadTrigger.classList.remove('notebook-flip')
+          }, 500)
+        }
+        
         this.$message.success('上传成功')
       } else {
         this.$message.error(response.message || '上传失败')
@@ -196,5 +208,26 @@ export default {
   font-size: 12px;
   color: #9ca3af;
   text-align: center;
+}
+
+/* 笔记本翻开动画 */
+.notebook-flip {
+  animation: notebookFlip 0.5s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes notebookFlip {
+  0% {
+    transform: rotateX(0deg);
+    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.25);
+  }
+  50% {
+    transform: rotateX(90deg);
+    box-shadow: 0 0 0 rgba(255, 183, 197, 0);
+  }
+  100% {
+    transform: rotateX(0deg);
+    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.25);
+  }
 }
 </style>
