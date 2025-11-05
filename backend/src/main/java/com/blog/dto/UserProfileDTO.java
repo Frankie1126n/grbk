@@ -33,6 +33,11 @@ public class UserProfileDTO implements Serializable {
     private String avatarUrl;
 
     /**
+     * 背景图片URL
+     */
+    private String backgroundImageUrl;
+
+    /**
      * 旧密码（修改密码时必填）
      */
     private String oldPassword;

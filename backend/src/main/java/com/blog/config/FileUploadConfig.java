@@ -50,6 +50,7 @@ public class FileUploadConfig {
         new File(path + "avatars/").mkdirs();
         new File(path + "covers/").mkdirs();
         new File(path + "content/").mkdirs();
+        new File(path + "backgrounds/").mkdirs();
     }
     
     @Bean

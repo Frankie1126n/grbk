@@ -87,4 +87,21 @@ public class FileController {
         String fileUrl = fileUploadConfig.getPrefix() + "content/" + fileName;
         return Result.success("上传成功", fileUrl);
     }
+    
+    /**
+     * 上传背景图片
+     */
+    @ApiOperation("上传背景图片")
+    @PostMapping("/upload/background")
+    public Result<String> uploadBackgroundImage(@RequestParam("file") MultipartFile file) {
+        String fileName = FileUploadUtil.uploadFile(
+            file, 
+            fileUploadConfig.getPath() + "backgrounds/", 
+            fileUploadConfig.getImageFormats(), 
+            fileUploadConfig.getMaxSize()
+        );
+        
+        String fileUrl = fileUploadConfig.getPrefix() + "backgrounds/" + fileName;
+        return Result.success("上传成功", fileUrl);
+    }
 }

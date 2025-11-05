@@ -131,6 +131,7 @@ public class UserServiceImpl implements UserService {
         userInfoDTO.setUsername(user.getUsername());
         userInfoDTO.setEmail(user.getEmail());
         userInfoDTO.setAvatarUrl(user.getAvatarUrl());
+        userInfoDTO.setBackgroundImageUrl(user.getBackgroundImageUrl());
         userInfoDTO.setRole(user.getRole());
         
         return userInfoDTO;
@@ -167,6 +168,11 @@ public class UserServiceImpl implements UserService {
         // 更新头像
         if (StringUtils.hasText(profileDTO.getAvatarUrl())) {
             user.setAvatarUrl(profileDTO.getAvatarUrl());
+        }
+        
+        // 更新背景图片
+        if (StringUtils.hasText(profileDTO.getBackgroundImageUrl())) {
+            user.setBackgroundImageUrl(profileDTO.getBackgroundImageUrl());
         }
         
         // 更新密码

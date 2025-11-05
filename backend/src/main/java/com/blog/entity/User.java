@@ -43,6 +43,11 @@ public class User implements Serializable {
     private String avatarUrl;
 
     /**
+     * 背景图片URL（扩展字段）
+     */
+    private String backgroundImageUrl;
+
+    /**
      * 用户状态（1-正常，0-禁用）
      */
     private Integer status;

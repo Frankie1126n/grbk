@@ -34,6 +34,11 @@ public class UserInfoDTO implements Serializable {
     private String avatarUrl;
 
     /**
+     * 背景图片URL
+     */
+    private String backgroundImageUrl;
+
+    /**
      * 用户角色（admin-管理员，user-普通用户）
      */
     private String role;

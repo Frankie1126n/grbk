@@ -21,6 +21,15 @@
           />
         </el-form-item>
 
+        <el-form-item label="背景图片">
+          <ImageUpload
+            v-model="profileForm.backgroundImageUrl"
+            upload-type="background"
+            placeholder="点击上传背景图片"
+            tip="支持 jpg、png、gif 格式，大小不超过 10MB"
+          />
+        </el-form-item>
+
         <el-form-item label="用户名" prop="username">
           <el-input
             v-model="profileForm.username"
@@ -108,6 +117,7 @@ export default {
         username: '',
         email: '',
         avatarUrl: '',
+        backgroundImageUrl: '',
         oldPassword: '',
         newPassword: '',
         confirmPassword: ''
@@ -143,6 +153,7 @@ export default {
           this.profileForm.username = res.data.username
           this.profileForm.email = res.data.email
           this.profileForm.avatarUrl = res.data.avatarUrl || ''
+          this.profileForm.backgroundImageUrl = res.data.backgroundImageUrl || ''
           
           // 保存原始数据
           this.originalData = { ...this.profileForm }
@@ -168,7 +179,8 @@ export default {
           const updateData = {
             username: this.profileForm.username,
             email: this.profileForm.email,
-            avatarUrl: this.profileForm.avatarUrl
+            avatarUrl: this.profileForm.avatarUrl,
+            backgroundImageUrl: this.profileForm.backgroundImageUrl
           }
 
           // 如果要修改密码
@@ -186,7 +198,8 @@ export default {
               ...this.$store.state.user.userInfo,
               username: this.profileForm.username,
               email: this.profileForm.email,
-              avatarUrl: this.profileForm.avatarUrl
+              avatarUrl: this.profileForm.avatarUrl,
+              backgroundImageUrl: this.profileForm.backgroundImageUrl
             })
             
             // 直接跳转回首页

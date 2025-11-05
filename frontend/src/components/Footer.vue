@@ -3,15 +3,18 @@
     <div class="container">
       <div class="footer-content">
         <p class="copyright">
-          © 2024 个人博客系统 | Powered by Vue2 + Spring Boot
+          © 2025 个人博客系统
         </p>
         <div class="footer-links">
-          <a href="#">关于</a>
+          <a href="https://github.com/Frankie1126n/grbk/blob/master/README.md" target="_blank" rel="noopener noreferrer">关于</a>
           <span>|</span>
-          <a href="#">联系</a>
-          <span>|</span>
-          <a href="#">GitHub</a>
+          <a href="https://github.com/Frankie1126n/grbk" target="_blank" rel="noopener noreferrer" >GitHub</a>
         </div>
+      </div>
+      <div class="footer-content">
+        <p class="copyright">
+        联系我:frankie1126n@qq.com
+        </p>
       </div>
     </div>
   </footer>

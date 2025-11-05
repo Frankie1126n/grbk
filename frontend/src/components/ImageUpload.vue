@@ -32,8 +32,8 @@ export default {
     },
     uploadType: {
       type: String,
-      default: 'image', // image, avatar, cover, content
-      validator: value => ['image', 'avatar', 'cover', 'content'].includes(value)
+      default: 'image', // image, avatar, cover, content, background
+      validator: value => ['image', 'avatar', 'cover', 'content', 'background'].includes(value)
     },
     placeholder: {
       type: String,
@@ -72,7 +72,8 @@ export default {
         image: '/file/upload/image',
         avatar: '/file/upload/avatar',
         cover: '/file/upload/cover',
-        content: '/file/upload/content'
+        content: '/file/upload/content',
+        background: '/file/upload/background'
       }
       return baseUrl + typeMap[this.uploadType]
     },
