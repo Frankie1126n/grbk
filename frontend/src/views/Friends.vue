@@ -274,10 +274,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CroppedAvatar from '@/components/CroppedAvatar'
+import { getConfig } from '@/utils/config'
 
 export default {
   name: 'Friends',
@@ -302,7 +303,7 @@ export default {
       },
       searchResults: [],
       selectedUserForRequest: null,
-      defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      defaultAvatar: getConfig().DEFAULT_AVATAR
     }
   },
   computed: {
@@ -313,10 +314,14 @@ export default {
       'friendListPagination',
       'friendRequestsPagination',
       'sentFriendRequestsPagination'
-    ])
+    ]),
+    ...mapGetters('user', ['isLogin'])
   },
   created() {
-    this.initData()
+    // 只有在用户已登录时才初始化数据
+    if (this.isLogin) {
+      this.initData()
+    }
   },
   methods: {
     ...mapActions('friend', [

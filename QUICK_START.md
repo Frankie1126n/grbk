@@ -41,8 +41,7 @@ mvn spring-boot:run
 # 直接运行 src/main/java/com/blog/BlogApplication.java
 
 # 启动成功后访问:
-# API地址: http://localhost:8080/api
-# Swagger文档: http://localhost:8080/api/swagger-ui/
+
 ```
 
 ### 第三步：前端启动
@@ -58,7 +57,7 @@ npm install
 npm run dev
 
 # 启动成功后访问:
-# 前端地址: http://localhost:8081
+
 ```
 
 ## 测试账号
@@ -137,7 +136,7 @@ grbk/
 ## API测试
 
 使用Swagger进行API测试：
-http://localhost:8080/api/swagger-ui/
+
 
 或使用Postman/Apifox导入接口文档测试。
 

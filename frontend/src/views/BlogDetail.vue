@@ -145,7 +145,7 @@ export default {
         return ''
       }
 
-      const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+      const baseUrl = process.env.VUE_APP_API_URL || '/api'
       let content = this.currentBlog.content
 
       // 转换 Markdown 图片语法为 HTML img 标签

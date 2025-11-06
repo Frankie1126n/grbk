@@ -1,8 +1,11 @@
 package com.blog;
 
+import com.blog.util.PathUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.nio.file.Paths;
 
 /**
  * Personal Blog System - Main Application
@@ -16,10 +19,11 @@ public class BlogApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BlogApplication.class, args);
+        System.out.println( PathUtil.getBasePath()+"/uploads/");
         System.out.println("\n========================================");
         System.out.println("Personal Blog System Started Successfully!");
-        System.out.println("API Base URL: http://localhost:8080/api");
-        System.out.println("Swagger URL: http://localhost:8080/api/swagger-ui/");
+        System.out.println("API Base URL: http://120.26.184.128:8080/api");
+        System.out.println("Swagger URL: http://120.26.184.128:8080/api/swagger-ui/");
         System.out.println("========================================\n");
     }
 }

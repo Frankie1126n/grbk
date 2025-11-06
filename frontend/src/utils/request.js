@@ -4,7 +4,7 @@ import router from '@/router'
 
 // 创建axios实例
 const request = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: process.env.VUE_APP_API_BASE_URL || '/api',
   timeout: 15000,
   withCredentials: true  // 允许携带cookies/session
 })

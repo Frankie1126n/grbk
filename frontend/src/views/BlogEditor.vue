@@ -316,7 +316,7 @@ export default {
     },
 
     getFullImageUrl(src) {
-      const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+      const baseUrl = process.env.VUE_APP_API_URL || '/api'
       if (!src.startsWith('http')) {
         return baseUrl + src
       }

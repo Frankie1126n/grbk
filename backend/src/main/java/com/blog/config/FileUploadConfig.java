@@ -1,5 +1,6 @@
 package com.blog.config;
 
+import com.blog.util.PathUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import lombok.Data;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.nio.file.Paths;
 
 /**
  * 文件上传配置
@@ -22,7 +24,7 @@ public class FileUploadConfig {
     /**
      * 文件上传路径
      */
-    private String path = "D:/javadm/grbk/uploads/";
+        private String path = PathUtil.getBasePath()+"/uploads/";
     
     /**
      * 文件访问前缀

@@ -71,6 +71,7 @@
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
 import CroppedAvatar from '@/components/CroppedAvatar'
+import { getConfig } from '@/utils/config'
 
 export default {
   name: 'Header',
@@ -81,7 +82,7 @@ export default {
     return {
       scrolled: false,
       searchKeyword: '',
-      defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      defaultAvatar: getConfig().DEFAULT_AVATAR
     }
   },
   computed: {
@@ -90,6 +91,9 @@ export default {
     ...mapState('message', ['unreadMessageCount']),
     isAdmin() {
       return this.userInfo && this.userInfo.role === 'admin'
+    },
+    isLogin() {
+      return this.$store.getters['user/isLogin']
     }
   },
   watch: {
@@ -100,10 +104,12 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
-    // 初始化社交功能数据
-    this.initSocialData()
-    // 检查当前路由是否需要实时刷新
-    this.handleRouteChange(this.$route)
+    // 只有在用户已登录时才初始化社交功能数据
+    if (this.isLogin) {
+      this.initSocialData()
+      // 检查当前路由是否需要实时刷新
+      this.handleRouteChange(this.$route)
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -172,10 +178,10 @@ export default {
       // 停止所有之前的定时刷新
       this.stopAllRefresh()
       
-      // 只在Home页面和Messages页面启动实时刷新
-      if (route.path === '/home') {
+      // 只有在用户已登录的情况下，在Home页面和Messages页面启动实时刷新
+      if (this.isLogin && route.path === '/home') {
         this.startHomeRefresh()
-      } else if (route.path === '/messages' || route.path.startsWith('/messages/')) {
+      } else if (this.isLogin && (route.path === '/messages' || route.path.startsWith('/messages/'))) {
         this.startMessagesRefresh()
       }
     },

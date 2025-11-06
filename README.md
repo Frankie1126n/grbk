@@ -101,9 +101,9 @@ mvn spring-boot:run
 # 或使用IDE直接运行 BlogApplication.java
 ```
 
-后端服务将在 `http://localhost:8080/api` 启动
+后端服务将在 `http://localhost:80180/api` 启动
 
-API文档访问: `http://localhost:8080/api/swagger-ui/`
+API文档访问: `http://localhost:80810/api/swagger-ui/`
 
 ### 3. 前端启动
 

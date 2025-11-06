@@ -120,6 +120,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CroppedAvatar from '@/components/CroppedAvatar'
+import { getConfig } from '@/utils/config'
 
 export default {
   name: 'Messages',
@@ -133,12 +134,12 @@ export default {
       friendSearch: '',
       activeFriend: null,
       messageContent: '',
-      defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      defaultAvatar: getConfig().DEFAULT_AVATAR,
       messageRefreshTimer: null
     }
   },
   computed: {
-    ...mapGetters('user', ['userInfo']),
+    ...mapGetters('user', ['userInfo', 'isLogin']),
     ...mapState('friend', ['friendList']),
     ...mapState('message', ['chatHistory', 'chatHistoryPagination']),
     
@@ -159,8 +160,10 @@ export default {
     this.initData()
   },
   mounted() {
-    // 开始定时刷新消息
-    this.startMessageRefresh()
+    // 只有在用户已登录时才开始定时刷新消息
+    if (this.isLogin) {
+      this.startMessageRefresh()
+    }
   },
   beforeDestroy() {
     // 清除定时器
@@ -311,12 +314,15 @@ export default {
     },
     
     startMessageRefresh() {
-      // 每1分钟刷新一次消息
-      this.messageRefreshTimer = setInterval(() => {
-        if (this.activeFriend) {
-          this.getChatHistory({ friendId: this.activeFriend.id })
-        }
-      }, 60000)
+      // 只有在用户已登录且有活跃好友时才刷新消息
+      if (this.isLogin && this.activeFriend) {
+        // 每1分钟刷新一次消息
+        this.messageRefreshTimer = setInterval(() => {
+          if (this.activeFriend) {
+            this.getChatHistory({ friendId: this.activeFriend.id })
+          }
+        }, 60000)
+      }
     },
     
     stopMessageRefresh() {

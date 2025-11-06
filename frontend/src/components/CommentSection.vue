@@ -209,7 +209,7 @@ export default {
       submitting: false,
       defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
       expandedComments: new Set(), // 记录展开的评论 ID
-      uploadUrl: (process.env.VUE_APP_API_URL || 'http://localhost:8080/api') + '/file/upload/content',
+      uploadUrl: (process.env.VUE_APP_API_URL || '/api') + '/file/upload/content',
       uploadHeaders: {
         'Authorization': localStorage.getItem('token')
       },
@@ -277,7 +277,7 @@ export default {
         // 构建包含文本和图片的内容
         let content = this.newComment.trim()
         this.newCommentImages.forEach(img => {
-          const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+          const baseUrl = process.env.VUE_APP_API_URL || '/api'
           const relativePath = img.startsWith(baseUrl) ? img.replace(baseUrl, '') : img
           content += `\n![image](${relativePath})`
         })
@@ -446,7 +446,7 @@ export default {
     },
 
     getFullImageUrl(src) {
-      const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+      const baseUrl = process.env.VUE_APP_API_URL || '/api'
       if (!src.startsWith('http')) {
         return baseUrl + src
       }
@@ -525,7 +525,7 @@ export default {
     formatContent(content) {
       if (!content) return ''
       
-      const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+      const baseUrl = process.env.VUE_APP_API_URL || '/api'
       
       // 转换 Markdown 图片语法为 HTML img 标签
       let formattedContent = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {

@@ -81,6 +81,7 @@
 import { getUserById } from '@/api/user'
 import { getBlogList } from '@/api/blog'
 import CroppedAvatar from '@/components/CroppedAvatar'
+import { getConfig } from '@/utils/config'
 
 export default {
   name: 'UserProfile',
@@ -92,7 +93,7 @@ export default {
       loading: false,
       userProfile: null,
       userBlogs: [],
-      defaultAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      defaultAvatar: getConfig().DEFAULT_AVATAR,
       imagePreviewVisible: false,
       previewImageUrl: ''
     }

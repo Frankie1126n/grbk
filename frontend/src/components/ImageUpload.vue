@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     uploadUrl() {
-      const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+      const baseUrl = process.env.VUE_APP_API_URL || '/api'
       const typeMap = {
         image: '/file/upload/image',
         avatar: '/file/upload/avatar',
@@ -109,7 +109,7 @@ export default {
         // 确保 URL是完整的
         let imageUrl = response.data
         if (!imageUrl.startsWith('http')) {
-          const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:8080/api'
+          const baseUrl = process.env.VUE_APP_API_URL || '/api'
           imageUrl = baseUrl + imageUrl
         }
         this.imageUrl = imageUrl

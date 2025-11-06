@@ -61,7 +61,7 @@ import BlogList from '@/components/BlogList'
 import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
@@ -79,19 +79,24 @@ export default {
     }
   },
   computed: {
-    ...mapState('message', ['unreadMessageCount'])
+    ...mapState('message', ['unreadMessageCount']),
+    ...mapGetters('user', ['isLogin'])
   },
   mounted() {
     // 添加滚动监听
     window.addEventListener('scroll', this.handleScroll)
-    // 初始化消息数据
-    this.initMessageData()
+    // 只有在用户已登录时才初始化消息数据
+    if (this.isLogin) {
+      this.initMessageData()
+    }
   },
   created() {
     // 初始化数据
     this.initData()
-    // 启动定时刷新
-    this.startAutoRefresh()
+    // 只有在用户已登录时才启动定时刷新
+    if (this.isLogin) {
+      this.startAutoRefresh()
+    }
   },
   beforeDestroy() {
     // 移除滚动监听
@@ -118,12 +123,15 @@ export default {
     },
 
     async initMessageData() {
-      try {
-        await this.getUnreadMessageCount()
-        // 启动消息数据定时刷新
-        this.startMessageRefresh()
-      } catch (error) {
-        console.error('初始化消息数据失败:', error)
+      // 只有在用户已登录时才初始化消息数据
+      if (this.isLogin) {
+        try {
+          await this.getUnreadMessageCount()
+          // 启动消息数据定时刷新
+          this.startMessageRefresh()
+        } catch (error) {
+          console.error('初始化消息数据失败:', error)
+        }
       }
     },
 
