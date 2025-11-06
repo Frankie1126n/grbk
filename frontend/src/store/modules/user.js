@@ -1,4 +1,4 @@
-import { login, register, getCurrentUser } from '@/api/user'
+import { login, register, getCurrentUser, getUserList } from '@/api/user'
 
 const state = {
   token: localStorage.getItem('token') || '',
@@ -77,6 +77,16 @@ const actions = {
     try {
       const response = await getCurrentUser()
       commit('SET_USER_INFO', response.data)
+      return response
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  
+  // 获取用户列表
+  async getUserList({ commit }, params) {
+    try {
+      const response = await getUserList(params)
       return response
     } catch (error) {
       return Promise.reject(error)

@@ -14,7 +14,14 @@
           <router-link to="/my-favorites" class="nav-item" active-class="active">
             <i class="el-icon-collection"></i> 我的收藏
           </router-link>
-          <router-link to="/deleted-blogs" class="nav-item" active-class="active">回收站</router-link>
+          <router-link to="/friends" class="nav-item" active-class="active">
+            <i class="el-icon-user"></i> 好友
+            <el-badge v-if="pendingFriendRequestCount > 0" :value="pendingFriendRequestCount" class="friend-badge" />
+          </router-link>
+          <router-link to="/messages" class="nav-item" active-class="active">
+            <i class="el-icon-chat-dot-round"></i> 私信
+            <el-badge v-if="unreadMessageCount > 0" :value="unreadMessageCount" class="message-badge" />
+          </router-link>
           <el-dropdown v-if="isAdmin" @command="handleManagementCommand">
             <span class="nav-item">
               管理 <i class="el-icon-arrow-down"></i>
@@ -48,6 +55,7 @@
             </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="profile">个人中心</el-dropdown-item>
+              <el-dropdown-item command="friends">好友管理</el-dropdown-item>
               <el-dropdown-item command="favorites">
                 <i class="el-icon-collection"></i> 我的收藏
               </el-dropdown-item>
@@ -61,7 +69,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 import CroppedAvatar from '@/components/CroppedAvatar'
 
 export default {
@@ -78,19 +86,35 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['userInfo']),
+    ...mapState('friend', ['pendingFriendRequestCount']),
+    ...mapState('message', ['unreadMessageCount']),
     isAdmin() {
       return this.userInfo && this.userInfo.role === 'admin'
     }
   },
+  watch: {
+    // 监听路由变化，只在特定页面启动实时刷新
+    $route(to, from) {
+      this.handleRouteChange(to)
+    }
+  },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
+    // 初始化社交功能数据
+    this.initSocialData()
+    // 检查当前路由是否需要实时刷新
+    this.handleRouteChange(this.$route)
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
+    // 停止所有定时刷新
+    this.stopAllRefresh()
   },
   methods: {
     ...mapActions('user', ['logout']),
     ...mapActions('blog', ['setSearchParams', 'getBlogList']),
+    ...mapActions('friend', ['getPendingFriendRequestCount']),
+    ...mapActions('message', ['getUnreadMessageCount']),
     
     handleScroll() {
       this.scrolled = window.scrollY > 50
@@ -114,6 +138,8 @@ export default {
         })
       } else if (command === 'profile') {
         this.$router.push('/profile')
+      } else if (command === 'friends') {
+        this.$router.push('/friends')
       } else if (command === 'favorites') {
         this.$router.push('/my-favorites')
       }
@@ -127,6 +153,68 @@ export default {
       }
       if (routes[command]) {
         this.$router.push(routes[command])
+      }
+    },
+    
+    async initSocialData() {
+      try {
+        // 只初始化一次数据，不启动定时刷新
+        await Promise.all([
+          this.getPendingFriendRequestCount(),
+          this.getUnreadMessageCount()
+        ])
+      } catch (error) {
+        console.error('初始化社交数据失败:', error)
+      }
+    },
+    
+    handleRouteChange(route) {
+      // 停止所有之前的定时刷新
+      this.stopAllRefresh()
+      
+      // 只在Home页面和Messages页面启动实时刷新
+      if (route.path === '/home') {
+        this.startHomeRefresh()
+      } else if (route.path === '/messages' || route.path.startsWith('/messages/')) {
+        this.startMessagesRefresh()
+      }
+    },
+    
+    startHomeRefresh() {
+      // Home页面每1分钟刷新一次消息数据
+      this.homeRefreshTimer = setInterval(async () => {
+        try {
+          await this.getUnreadMessageCount()
+        } catch (error) {
+          console.error('刷新Home页面数据失败:', error)
+        }
+      }, 60000)
+    },
+    
+    startMessagesRefresh() {
+      // Messages页面每1分钟刷新一次消息数据
+      this.messagesRefreshTimer = setInterval(async () => {
+        try {
+          await Promise.all([
+            this.getPendingFriendRequestCount(),
+            this.getUnreadMessageCount()
+          ])
+        } catch (error) {
+          console.error('刷新Messages页面数据失败:', error)
+        }
+      }, 60000)
+    },
+    
+    stopAllRefresh() {
+      // 清除所有定时器
+      if (this.homeRefreshTimer) {
+        clearInterval(this.homeRefreshTimer)
+        this.homeRefreshTimer = null
+      }
+      
+      if (this.messagesRefreshTimer) {
+        clearInterval(this.messagesRefreshTimer)
+        this.messagesRefreshTimer = null
       }
     }
   }
@@ -223,6 +311,8 @@ export default {
   position: relative;
   padding: 8px 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 /* 课本翻页效果 */
@@ -263,6 +353,15 @@ export default {
 
 .nav-item.active {
   color: #FFB7C5;
+}
+
+.friend-badge, .message-badge {
+  margin-left: 5px;
+}
+
+.friend-badge >>> .el-badge__content, .message-badge >>> .el-badge__content {
+  background-color: #FF9F43;
+  border: none;
 }
 
 .header-actions {

@@ -93,6 +93,24 @@ const router = new Router({
       name: 'MyFavorites',
       component: () => import('@/views/MyFavorites'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/friends',
+      name: 'Friends',
+      component: () => import('@/views/Friends'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/messages',
+      name: 'Messages',
+      component: () => import('@/views/Messages'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/messages/:friendId',
+      name: 'MessagesChat',
+      component: () => import('@/views/Messages'),
+      meta: { requiresAuth: true }
     }
   ]
 })

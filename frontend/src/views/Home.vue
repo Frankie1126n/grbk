@@ -14,6 +14,33 @@
 
           <!-- Right: Sidebar -->
           <div class="sidebar-area">
+            <div class="sidebar-section">
+              <h3 class="section-title">最新消息</h3>
+              <div class="messages-preview" v-if="unreadMessageCount > 0">
+                <el-badge :value="unreadMessageCount" class="message-badge">
+                  <el-button 
+                    type="primary" 
+                    plain 
+                    size="small" 
+                    @click="$router.push('/messages')"
+                    class="messages-button"
+                  >
+                    <i class="el-icon-chat-dot-round"></i> 您有{{ unreadMessageCount }}条未读消息
+                  </el-button>
+                </el-badge>
+              </div>
+              <div class="messages-preview" v-else>
+                <el-button 
+                  type="info" 
+                  plain 
+                  size="small" 
+                  @click="$router.push('/messages')"
+                  class="messages-button"
+                >
+                  <i class="el-icon-chat-dot-round"></i> 查看私信
+                </el-button>
+              </div>
+            </div>
             <Sidebar />
           </div>
         </div>
@@ -34,7 +61,7 @@ import BlogList from '@/components/BlogList'
 import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Home',
@@ -51,9 +78,14 @@ export default {
       refreshInterval: 5000 // 5秒刷新一次
     }
   },
+  computed: {
+    ...mapState('message', ['unreadMessageCount'])
+  },
   mounted() {
     // 添加滚动监听
     window.addEventListener('scroll', this.handleScroll)
+    // 初始化消息数据
+    this.initMessageData()
   },
   created() {
     // 初始化数据
@@ -71,6 +103,7 @@ export default {
     ...mapActions('blog', ['getBlogList']),
     ...mapActions('category', ['getCategoryList']),
     ...mapActions('tag', ['getTagList']),
+    ...mapActions('message', ['getUnreadMessageCount']),
 
     async initData() {
       try {
@@ -81,6 +114,16 @@ export default {
         ])
       } catch (error) {
         console.error('数据加载失败:', error)
+      }
+    },
+
+    async initMessageData() {
+      try {
+        await this.getUnreadMessageCount()
+        // 启动消息数据定时刷新
+        this.startMessageRefresh()
+      } catch (error) {
+        console.error('初始化消息数据失败:', error)
       }
     },
 
@@ -98,11 +141,29 @@ export default {
       }
     },
 
+    startMessageRefresh() {
+      // 定时刷新消息数据
+      this.messageRefreshTimer = setInterval(() => {
+        this.getUnreadMessageCount()
+      }, 10000) // 10秒刷新一次
+    },
+
+    stopMessageRefresh() {
+      if (this.messageRefreshTimer) {
+        clearInterval(this.messageRefreshTimer)
+        this.messageRefreshTimer = null
+      }
+    },
+
     // 滚动处理函数
     handleScroll() {
       // 这里可以添加滚动相关的逻辑
       // 例如检测是否滚动到特定区域来触发动画
     }
+  },
+  
+  beforeDestroy() {
+    this.stopMessageRefresh()
   }
 }
 </script>
@@ -165,6 +226,58 @@ export default {
   position: sticky;
   top: 80px;
   height: fit-content;
+}
+
+.sidebar-section {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 2px solid rgba(255, 183, 197, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.15);
+}
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #FF9F43;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #FFB7C5, #FF9F43);
+  border-radius: 2px;
+}
+
+.messages-preview {
+  text-align: center;
+}
+
+.messages-button {
+  width: 100%;
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+}
+
+.messages-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 183, 197, 0.25);
+  border-color: rgba(255, 183, 197, 0.5);
+}
+
+.message-badge >>> .el-badge__content {
+  background-color: #FF9F43;
+  border: none;
 }
 
 /* 响应式设计 */

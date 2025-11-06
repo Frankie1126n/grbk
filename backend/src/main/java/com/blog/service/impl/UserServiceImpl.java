@@ -12,6 +12,7 @@ import com.blog.dto.UserManagementDTO;
 import com.blog.entity.User;
 import com.blog.exception.BusinessException;
 import com.blog.mapper.UserMapper;
+import com.blog.service.FriendshipService;
 import com.blog.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * User Service Implementation
@@ -37,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private FriendshipService friendshipService;
 
     @Override
     public UserInfoDTO login(LoginDTO loginDTO) {
@@ -98,6 +103,29 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(LocalDateTime.now());
 
         userMapper.insert(user);
+        
+        // 自动添加管理员为好友
+        LambdaQueryWrapper<User> adminWrapper = new LambdaQueryWrapper<>();
+        adminWrapper.eq(User::getRole, "admin");
+        List<User> adminUsers = userMapper.selectList(adminWrapper);
+        
+        for (User adminUser : adminUsers) {
+            // 添加双向好友关系（用户 <-> 管理员）
+            friendshipService.addFriend(Long.valueOf(user.getId()), Long.valueOf(adminUser.getId()));
+        }
+        
+        // 同时让所有已存在的用户都添加这个新用户为好友（如果他们是管理员）
+        LambdaQueryWrapper<User> allUsersWrapper = new LambdaQueryWrapper<>();
+        allUsersWrapper.eq(User::getRole, "admin");
+        List<User> allAdminUsers = userMapper.selectList(allUsersWrapper);
+        
+        for (User adminUser : allAdminUsers) {
+            // 确保不是同一个用户
+            if (!adminUser.getId().equals(user.getId())) {
+                // 添加好友关系（管理员 -> 新用户）
+                friendshipService.addFriend(Long.valueOf(adminUser.getId()), Long.valueOf(user.getId()));
+            }
+        }
     }
 
     @Override
