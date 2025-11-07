@@ -371,6 +371,7 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  height: 100%;
 }
 
 .messages-card {
@@ -382,6 +383,7 @@ export default {
   height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .card-header {
@@ -498,6 +500,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 
 .chat-header {
@@ -507,6 +510,7 @@ export default {
   padding: 15px 20px;
   border-bottom: 1px solid rgba(255, 183, 197, 0.2);
   background: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
 }
 
 .chat-partner-info {
@@ -593,6 +597,7 @@ export default {
   padding: 15px;
   border-top: 1px solid rgba(255, 183, 197, 0.2);
   background: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
 }
 
 .input-actions {
@@ -616,6 +621,78 @@ export default {
   
   .message {
     max-width: 85%;
+  }
+  
+  .content-wrapper {
+    padding: 10px 0;
+  }
+  
+  .container {
+    padding: 0 15px;
+    height: auto;
+  }
+  
+  .messages-card {
+    height: calc(100vh - 120px);
+  }
+  
+  .chat-messages {
+    padding: 15px;
+  }
+  
+  .message-text {
+    font-size: 13px;
+  }
+  
+  .chat-container {
+    height: calc(100vh - 320px);
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .friends-sidebar {
+    height: 150px;
+  }
+  
+  .chat-header {
+    padding: 10px 15px;
+  }
+  
+  .partner-name {
+    font-size: 15px;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .message-content {
+    padding: 8px 12px;
+  }
+  
+  .message-text {
+    font-size: 12px;
+  }
+  
+  .message-time {
+    font-size: 10px;
+  }
+  
+  .chat-input {
+    padding: 10px;
+  }
+  
+  .input-actions {
+    margin-top: 8px;
+  }
+  
+  .el-textarea__inner {
+    font-size: 14px;
+  }
+  
+  .chat-container {
+    height: calc(100vh - 270px);
   }
 }
 </style>

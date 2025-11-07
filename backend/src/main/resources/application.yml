@@ -15,7 +15,7 @@ spring:
     name: personal-blog
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://120.26.184.128:3306/blog_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://{}:3306/blog_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: blog_system
     password: root
   jackson:
@@ -30,9 +30,9 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   mail:
-    host: # SMTP
-    username:   # 邮箱
-    password:  # 邮箱授权码
+    host: smtp.qq.com
+    username:
+    password:
     default-encoding: UTF-8
     properties:
       mail:
@@ -42,6 +42,7 @@ spring:
             enable: true
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
+    port: 465
 
 # MyBatis-Plus Configuration
 mybatis-plus:

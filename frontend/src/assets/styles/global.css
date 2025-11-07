@@ -370,3 +370,160 @@ body::after {
 .shake {
   animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
+
+/* Mobile Responsive Design */
+/* Ensure proper viewport settings */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
+/* Base mobile styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px; /* Increase font size for better readability on mobile */
+    line-height: 1.5;
+  }
+  
+  .container {
+    padding: 0 15px;
+  }
+  
+  .card {
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  /* Adjust button sizes for better touch targets */
+  .btn-primary {
+    padding: 14px 30px;
+    font-size: 16px;
+    border-radius: 25px;
+    min-height: 48px; /* Minimum touch target size */
+  }
+  
+  /* Ensure images are responsive */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Adjust input fields for mobile */
+  input, textarea, select {
+    font-size: 16px; /* Prevent zoom on iOS Safari */
+    padding: 12px;
+  }
+  
+  /* Adjust form elements */
+  .el-input__inner {
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  .el-textarea__inner {
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  /* Adjust dialog widths for mobile */
+  .el-dialog {
+    width: 95% !important;
+    margin: 20px auto !important;
+  }
+  
+  /* Adjust card padding for mobile */
+  .el-card__body {
+    padding: 20px;
+  }
+  
+  /* Ensure proper spacing for mobile */
+  .el-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Small mobile devices (phones, less than 480px) */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+  
+  .container {
+    padding: 0 10px;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  /* Further adjust button sizes */
+  .btn-primary {
+    padding: 12px 25px;
+    font-size: 15px;
+  }
+  
+  /* Adjust dialog for very small screens */
+  .el-dialog {
+    width: 98% !important;
+    margin: 10px auto !important;
+  }
+  
+  /* Reduce padding in card headers */
+  .el-card__header {
+    padding: 12px 15px;
+  }
+  
+  .el-card__body {
+    padding: 15px;
+  }
+}
+
+/* Tablets in portrait mode */
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+}
+
+/* Tablets in landscape mode */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+/* Ensure proper handling of flexbox on mobile */
+@media (max-width: 768px) {
+  .flex-column-mobile {
+    flex-direction: column;
+  }
+  
+  .flex-wrap-mobile {
+    flex-wrap: wrap;
+  }
+  
+  .text-center-mobile {
+    text-align: center;
+  }
+  
+  .full-width-mobile {
+    width: 100%;
+  }
+  
+  .half-width-mobile {
+    width: 50%;
+  }
+  
+  .hidden-mobile {
+    display: none;
+  }
+  
+  .block-mobile {
+    display: block;
+  }
+}

@@ -63,7 +63,54 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+        
+        <!-- Mobile Menu Toggle -->
+        <div class="mobile-menu-toggle" @click="toggleMobileMenu">
+          <i class="el-icon-menu"></i>
+        </div>
       </div>
+      
+      <!-- Mobile Navigation Menu -->
+      <transition name="slide-down">
+        <nav v-show="mobileMenuVisible" class="mobile-nav-menu">
+          <router-link to="/home" class="mobile-nav-item" active-class="active" @click.native="hideMobileMenu">首页</router-link>
+          <router-link to="/blog-editor" class="mobile-nav-item" active-class="active" @click.native="hideMobileMenu">写文章</router-link>
+          <router-link to="/my-favorites" class="mobile-nav-item" active-class="active" @click.native="hideMobileMenu">
+            <i class="el-icon-collection"></i> 我的收藏
+          </router-link>
+          <router-link to="/friends" class="mobile-nav-item" active-class="active" @click.native="hideMobileMenu">
+            <i class="el-icon-user"></i> 好友
+            <el-badge v-if="pendingFriendRequestCount > 0" :value="pendingFriendRequestCount" class="friend-badge" />
+          </router-link>
+          <router-link to="/messages" class="mobile-nav-item" active-class="active" @click.native="hideMobileMenu">
+            <i class="el-icon-chat-dot-round"></i> 私信
+            <el-badge v-if="unreadMessageCount > 0" :value="unreadMessageCount" class="message-badge" />
+          </router-link>
+          <div v-if="isAdmin" class="mobile-nav-dropdown">
+            <span class="mobile-nav-item" @click="toggleManagementMenu">
+              管理 <i class="el-icon-arrow-down" :class="{ 'rotated': managementMenuVisible }"></i>
+            </span>
+            <transition name="slide-down">
+              <div v-show="managementMenuVisible" class="management-menu">
+                <router-link to="/category-management" class="management-item" @click.native="hideMobileMenu">分类管理</router-link>
+                <router-link to="/tag-management" class="management-item" @click.native="hideMobileMenu">标签管理</router-link>
+                <router-link to="/user-management" class="management-item" @click.native="hideMobileMenu">用户管理</router-link>
+              </div>
+            </transition>
+          </div>
+          <div class="mobile-user-actions">
+            <div class="mobile-user-info" @click="goToProfile">
+              <CroppedAvatar 
+                :src="userInfo.avatarUrl || defaultAvatar" 
+                :size="36" 
+                :border-width="'2px'"
+              />
+              <span class="username">{{ userInfo.username }}</span>
+            </div>
+            <el-button type="danger" size="small" @click="handleLogout">退出登录</el-button>
+          </div>
+        </nav>
+      </transition>
     </div>
   </header>
 </template>
@@ -82,7 +129,9 @@ export default {
     return {
       scrolled: false,
       searchKeyword: '',
-      defaultAvatar: getConfig().DEFAULT_AVATAR
+      defaultAvatar: getConfig().DEFAULT_AVATAR,
+      mobileMenuVisible: false,
+      managementMenuVisible: false
     }
   },
   computed: {
@@ -100,6 +149,8 @@ export default {
     // 监听路由变化，只在特定页面启动实时刷新
     $route(to, from) {
       this.handleRouteChange(to)
+      // Hide mobile menu when route changes
+      this.mobileMenuVisible = false
     }
   },
   mounted() {
@@ -222,6 +273,41 @@ export default {
         clearInterval(this.messagesRefreshTimer)
         this.messagesRefreshTimer = null
       }
+    },
+    
+    toggleMobileMenu() {
+      this.mobileMenuVisible = !this.mobileMenuVisible
+      // Close management menu when closing mobile menu
+      if (!this.mobileMenuVisible) {
+        this.managementMenuVisible = false
+      }
+    },
+    
+    hideMobileMenu() {
+      this.mobileMenuVisible = false
+      this.managementMenuVisible = false
+    },
+    
+    toggleManagementMenu() {
+      this.managementMenuVisible = !this.managementMenuVisible
+    },
+    
+    goToProfile() {
+      this.$router.push('/profile')
+      this.hideMobileMenu()
+    },
+    
+    handleLogout() {
+      this.$confirm('确定要退出登录吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.logout()
+        this.$message.success('已退出登录')
+        this.$router.push('/login')
+        this.hideMobileMenu()
+      })
     }
   }
 }
@@ -437,6 +523,118 @@ export default {
   color: #FF9F43;
 }
 
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  font-size: 24px;
+  color: #FF9F43;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Mobile Navigation Menu */
+.mobile-nav-menu {
+  display: none;
+  flex-direction: column;
+  background: rgba(255, 251, 235, 0.95);
+  backdrop-filter: blur(15px);
+  border-top: 2px solid rgba(255, 183, 197, 0.3);
+  padding: 15px 0;
+  box-shadow: 0 4px 12px rgba(255, 183, 197, 0.2);
+}
+
+.mobile-nav-item {
+  padding: 15px 20px;
+  color: #FF9F43;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 183, 197, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-item:last-child {
+  border-bottom: none;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+  background: rgba(255, 183, 197, 0.1);
+  color: #FFB7C5;
+}
+
+.mobile-nav-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.management-menu {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 240, 220, 0.8);
+  margin: 10px 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.management-item {
+  padding: 12px 20px;
+  color: #FF9F43;
+  text-decoration: none;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(255, 183, 197, 0.1);
+  transition: all 0.2s ease;
+}
+
+.management-item:last-child {
+  border-bottom: none;
+}
+
+.management-item:hover {
+  background: rgba(255, 183, 197, 0.1);
+  color: #FFB7C5;
+}
+
+.mobile-user-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 183, 197, 0.1);
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* Rotated arrow for dropdown */
+.el-icon-arrow-down.rotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+/* Slide down transition */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+  max-height: 1000px;
+  overflow: hidden;
+}
+
+.slide-down-enter,
+.slide-down-leave-to {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .nav-menu {
@@ -449,6 +647,44 @@ export default {
   
   .header-content {
     height: 60px;
+  }
+  
+  .header-actions {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .mobile-nav-menu {
+    display: flex;
+  }
+  
+  .logo-area h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .mobile-nav-item {
+    font-size: 15px;
+    padding: 12px 15px;
+  }
+  
+  .management-item {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+  
+  .mobile-user-actions {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
   }
 }
 </style>

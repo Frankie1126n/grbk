@@ -92,6 +92,9 @@ public class UserController {
         // 生成6位随机验证码
         String code = String.format("%06d", new Random().nextInt(999999));
         // 发送邮件
+        System.out.println(username);
+        System.out.println(code);
+        System.out.println(email);
         SimpleMailMessage mess = new SimpleMailMessage();
         mess.setFrom(username);
         mess.setTo(email);

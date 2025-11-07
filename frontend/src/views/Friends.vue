@@ -801,5 +801,119 @@ export default {
   .request-actions {
     align-self: flex-end;
   }
+  
+  .content-wrapper {
+    padding: 10px 0;
+  }
+  
+  .container {
+    padding: 0 15px;
+  }
+  
+  .friends-card {
+    margin: 0 10px;
+  }
+  
+  .friend-info {
+    gap: 12px;
+  }
+  
+  .friend-name {
+    font-size: 15px;
+  }
+  
+  .sender-name {
+    font-size: 15px;
+  }
+  
+  .request-message,
+  .request-status,
+  .request-time {
+    font-size: 13px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  .friends-card {
+    margin: 0 5px;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .friend-info {
+    gap: 10px;
+  }
+  
+  .friend-name {
+    font-size: 14px;
+  }
+  
+  .friend-role {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+  
+  .friend-actions {
+    padding: 0 10px 10px;
+    gap: 8px;
+  }
+  
+  .el-button--mini {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  
+  .request-card {
+    padding: 12px;
+  }
+  
+  .request-info {
+    gap: 12px;
+  }
+  
+  .sender-name {
+    font-size: 14px;
+  }
+  
+  .request-message,
+  .request-status,
+  .request-time {
+    font-size: 12px;
+  }
+  
+  .request-actions {
+    gap: 8px;
+  }
+  
+  .el-dialog {
+    width: 95% !important;
+  }
+  
+  .search-result-item,
+  .selected-user-card {
+    padding: 10px;
+  }
+  
+  .user-name {
+    font-size: 13px;
+  }
+  
+  .user-email {
+    font-size: 11px;
+  }
 }
 </style>

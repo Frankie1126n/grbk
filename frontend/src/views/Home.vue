@@ -297,5 +297,28 @@ export default {
   .sidebar-area {
     position: static;
   }
+  
+  .content-wrapper {
+    padding: 10px 0;
+  }
+  
+  .container {
+    padding: 0 15px;
+  }
+  
+  .sidebar-section {
+    margin-bottom: 15px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  .sidebar-section {
+    padding: 15px;
+  }
 }
 </style>

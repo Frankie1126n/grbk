@@ -214,7 +214,8 @@ export default {
         'Authorization': localStorage.getItem('token')
       },
       imagePreviewVisible: false,
-      previewImageUrl: ''
+      previewImageUrl: '',
+      newCommentImages: [] // 添加这行来修复图片上传问题
     }
   },
   computed: {
@@ -227,9 +228,12 @@ export default {
     },
     totalCount() {
       let count = this.comments.length
-      this.comments.forEach(c => {
-        if (c.replies) count += c.replies.length
-      })
+      // 修复 forEach 错误：确保 comments 存在且是数组
+      if (Array.isArray(this.comments)) {
+        this.comments.forEach(c => {
+          if (c.replies && Array.isArray(c.replies)) count += c.replies.length
+        })
+      }
       return count
     }
   },
@@ -258,7 +262,8 @@ export default {
       this.loading = true
       try {
         const response = await getCommentList(this.blogId)
-        this.comments = response.data || []
+        // 确保响应数据存在且是数组
+        this.comments = (response.data && Array.isArray(response.data)) ? response.data : []
       } catch (error) {
         this.$message.error(error.message || '加载评论失败')
       } finally {

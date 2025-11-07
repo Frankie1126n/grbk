@@ -561,5 +561,45 @@ export default {
   .blog-title {
     font-size: 20px;
   }
+  
+  .blog-meta {
+    gap: 15px;
+  }
+  
+  .meta-item {
+    font-size: 13px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .blog-card {
+    padding: 15px;
+  }
+  
+  .cover-image {
+    height: 150px;
+  }
+  
+  .blog-title {
+    font-size: 18px;
+  }
+  
+  .blog-summary {
+    font-size: 14px;
+  }
+  
+  .blog-meta {
+    gap: 12px;
+  }
+  
+  .meta-item {
+    font-size: 12px;
+    gap: 4px;
+  }
+  
+  .meta-item i {
+    font-size: 14px;
+  }
 }
 </style>

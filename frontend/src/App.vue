@@ -80,4 +80,23 @@ export default {
     background-attachment: fixed;
   }
 }
+
+/* Ensure proper viewport handling */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
+/* Fix for mobile viewport height issues */
+@media (max-width: 768px) {
+  #app {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  body {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+}
 </style>

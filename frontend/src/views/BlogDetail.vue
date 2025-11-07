@@ -516,6 +516,14 @@ export default {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .blog-detail-container {
+    padding: 20px 0;
+  }
+  
+  .container {
+    padding: 0 15px;
+  }
+  
   .blog-detail {
     padding: 20px;
   }
@@ -526,6 +534,53 @@ export default {
 
   .blog-content {
     font-size: 14px;
+  }
+  
+  .blog-meta {
+    gap: 15px;
+  }
+  
+  .meta-item {
+    font-size: 13px;
+  }
+  
+  .interaction-bar {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .interaction-bar .el-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .blog-detail {
+    padding: 15px;
+  }
+  
+  .blog-title {
+    font-size: 20px;
+  }
+  
+  .blog-content {
+    font-size: 13px;
+  }
+  
+  .blog-meta {
+    gap: 10px;
+  }
+  
+  .meta-item {
+    font-size: 12px;
+  }
+  
+  .tag {
+    font-size: 11px;
+    padding: 3px 10px;
   }
 }
 
@@ -543,5 +598,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 480px) {
+  .image-preview-dialog {
+    width: 95% !important;
+    margin: 10px auto !important;
+  }
+  
+  .image-preview-dialog img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+  }
 }
 </style>
